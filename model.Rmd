@@ -14,7 +14,21 @@ lang: no-NB
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+suppressPackageStartupMessages({
+library(tidyverse)
+library(lubridate)
+library(modelr)
+library(broom)
+library(lmtest)
+library(sandwich)
+library(viridis)
+})
+knitr::opts_chunk$set(echo=FALSE, include = FALSE)
 ```
 
 Her foretar vi selve analysen
+
+```{r}
+pm2 <- read_csv("~/Dropbox/Master of Science in Business/Semester 1/MSB105 Data Science/Ass4/ass4-h21--OAO-KH/data/pm2.csv", show_col_types = FALSE)
+```
+
