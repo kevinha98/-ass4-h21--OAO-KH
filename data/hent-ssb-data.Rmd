@@ -14,25 +14,46 @@ lang: no-NB
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+suppressPackageStartupMessages({
+library(PxWebApiData)
+library(tidyverse)
+library(lubridate)
+})
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r knr}
+load("~/Dropbox/Master of Science in Business/Semester 1/MSB105 Data Science/Ass4/ass4-h21--OAO-KH/data/knr.Rdata")
 ```
 
-## Including Plots
+```{r pm2_raw}
+pm2_raw <- ApiData(
+  urlToData = "06035",
+  Region = knr,
+  ContentsCode = "KvPris",
+  Boligtype = "01",
+  Tid = c(as.character(2002:2017)))
 
-You can also embed plots, for example:
+# Skifter navn på variablene Region, Tid og value som angitt i oppgaven
+df_pm2_raw <- data.frame(
+    knr = pm2_raw[["dataset"]]$Region,
+    aar = pm2_raw[["dataset"]]$Tid,
+    pm2 = pm2_raw[["dataset"]]$value
+    )
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+#  For å slippe å hanske med det uhåndterlig lange navnet på dette elementet skifter vi først navn på dette til “desc”.
+names(pm2_raw)[[1]] <- "desc"
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r knavn}
+pm2 <- pm2_raw[[1]] %>%
+  mutate(knavn = pm2_raw$desc$region)
+```
+
+```{r politisk korrekthet}
+moenster <- str_replace(pm2[[7]], "\\(\\)","2019")
+
+mutate(knavn = str_replace(knavn, moenster))
+```
+
