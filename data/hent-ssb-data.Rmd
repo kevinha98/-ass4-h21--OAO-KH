@@ -50,10 +50,3 @@ names(pm2_raw)[[1]] <- "desc"
 pm2 <- pm2_raw[[1]] %>%
   mutate(knavn = pm2_raw$desc$region)
 ```
-
-```{r politisk korrekthet}
-moenster <- str_replace(pm2[[7]], "\\(\\)","2019")
-
-mutate(knavn = str_replace(knavn, moenster))
-```
-
