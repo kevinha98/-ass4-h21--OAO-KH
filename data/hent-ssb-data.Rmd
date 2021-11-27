@@ -52,8 +52,54 @@ names(pm2_raw)[[1]] <- "desc"
 
 Boligtypen vi er interessert i er eneboliger. Ifra APIen til SSB så ser vi at denne er gitt ved "01". Vi har dermed satt våres boligtype i *pm2_raw* til å være "01" slik at vi kun får eneboliger i datasettet. På grunn av at vi vet at vi skal finne pris per kvadratmeter til eneboliger, så kan vi bruke denne forutsetningen til å fjerne *boligtype* og *ContentsCode* fra pm2_raw.
 
+# Får Error "UseMethod("mutate")"
 
 ```{r knavn}
 pm2 <- pm2_raw[[1]] %>%
   mutate(knavn = pm2_raw$desc$region)
 ```
+# Fjerning av kommune årstal. Trenger Hjelp
+
+I kommunenavnene så er det oppgitt når dei ulike kommunane blei oppløyst. Vi ønsker å fjerne dette slik at vi kun for navnene på selve kommunene.
+
+```{r}
+df_pm2_raw$knavn <- str_remove(
+  string = arblos_aldersgrp$knavn,
+  pattern = fixed(" (-2019)"))
+```
+```{r}
+n <- str_remove(
+  string = pm2_raw$knavn, pattern = fixed("(1994-2019)"))
+```
+
+
+```{r Kommunenavn}
+load("test_string_tib.Rdata")
+# Legger inn regex mønster
+
+moenster <- '.fixed("(1994-2019)")'
+
+test_string_tib %>%
+mutate(
+knavn = str_replace(knavn, moenster, "fixed("(1994-2019)")")
+)
+```
+
+Vi sjekker videre hvor mange NA-verdier vi har i datasettet *pm2*.
+
+```{r NA_Desc}
+pm2_raw %>% 
+  filter(is.na(desc))
+```
+
+```{r NA_Tid}
+pm2_raw %>% 
+  filter(is.na(Tid))
+```
+
+```{r NA_Value}
+pm2_raw %>% 
+  filter(is.na(value))
+```
+
+Vi ser ut fra de tre kode chunkene *NA_Desc*, *NA_Tid* og *NA_Value*, at den eneste rekken som har NA-Verdier er *value* rekken.  Her har vi 2 903 NA-observasjoner.
