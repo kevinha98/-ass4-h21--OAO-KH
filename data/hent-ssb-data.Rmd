@@ -85,6 +85,8 @@ knavn = str_replace(knavn, moenster, "fixed("(1994-2019)")")
 )
 ```
 
+# NA-Verdier
+
 Vi sjekker videre hvor mange NA-verdier vi har i datasettet *pm2*.
 
 ```{r NA_Desc}
@@ -103,3 +105,6 @@ pm2_raw %>%
 ```
 
 Vi ser ut fra de tre kode chunkene *NA_Desc*, *NA_Tid* og *NA_Value*, at den eneste rekken som har NA-Verdier er *value* rekken.  Her har vi 2 903 NA-observasjoner.
+
+# Complete Cases
+
