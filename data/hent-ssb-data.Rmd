@@ -14,17 +14,20 @@ lang: no-NB
 ---
 
 ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
 suppressPackageStartupMessages({
 library(PxWebApiData)
 library(tidyverse)
 library(lubridate)
 })
-knitr::opts_chunk$set(echo = FALSE, include = FALSE)
 ```
 
 ```{r knr}
-load("~/Dropbox/Master of Science in Business/Semester 1/MSB105 Data Science/Ass4/ass4-h21--OAO-KH/data/knr.Rdata")
+#Vector med relevante kommunenummer
+load("knr.Rdata")
 ```
+
+I denne oppgava skal vi studere prisen per kvadratmeter i ein utvalgt bunke av kommuner. Dataene vi skal bruke kommer ifra SSB. For at vi skal kunne gjennomføre dette må vi dermed hente dataene våres fra SSB.
 
 ```{r pm2_raw}
 pm2_raw <- ApiData(
@@ -32,7 +35,9 @@ pm2_raw <- ApiData(
   Region = knr,
   ContentsCode = "KvPris",
   Boligtype = "01",
-  Tid = c(as.character(2002:2017)))
+  Tid = c(as.character(2002:2017))
+)$dataset %>% 
+  select(-Boligtype, -ContentsCode)
 
 # Skifter navn på variablene Region, Tid og value som angitt i oppgaven
 df_pm2_raw <- data.frame(
@@ -44,6 +49,8 @@ df_pm2_raw <- data.frame(
 #  For å slippe å hanske med det uhåndterlig lange navnet på dette elementet skifter vi først navn på dette til “desc”.
 names(pm2_raw)[[1]] <- "desc"
 ```
+
+Boligtypen vi er interessert i er eneboliger. Ifra APIen til SSB så ser vi at denne er gitt ved "01". Vi har dermed satt våres boligtype i *pm2_raw* til å være "01" slik at vi kun får eneboliger i datasettet. På grunn av at vi vet at vi skal finne pris per kvadratmeter til eneboliger, så kan vi bruke denne forutsetningen til å fjerne *boligtype* og *ContentsCode* fra pm2_raw.
 
 
 ```{r knavn}
