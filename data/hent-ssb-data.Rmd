@@ -27,7 +27,11 @@ library(lubridate)
 load("knr.Rdata")
 ```
 
+# Gjennomsnittleg Kvadratmeterpris
+
 I denne oppgava skal vi studere prisen per kvadratmeter i ein utvalgt bunke av kommuner. Dataene vi skal bruke kommer ifra SSB. For at vi skal kunne gjennomføre dette må vi dermed hente dataene våres fra SSB.
+
+## Data Henting, SSB
 
 ```{r pm2_raw}
 pm2_raw <- ApiData(
@@ -52,13 +56,13 @@ names(pm2_raw)[[1]] <- "desc"
 
 Boligtypen vi er interessert i er eneboliger. Ifra APIen til SSB så ser vi at denne er gitt ved "01". Vi har dermed satt våres boligtype i *pm2_raw* til å være "01" slik at vi kun får eneboliger i datasettet. På grunn av at vi vet at vi skal finne pris per kvadratmeter til eneboliger, så kan vi bruke denne forutsetningen til å fjerne *boligtype* og *ContentsCode* fra pm2_raw.
 
-# Får Error "UseMethod("mutate")"
+## Får Error "UseMethod("mutate")"
 
 ```{r knavn}
 pm2 <- pm2_raw[[1]] %>%
   mutate(knavn = pm2_raw$desc$region)
 ```
-# Fjerning av kommune årstal. Trenger Hjelp
+## Fjerning av kommune årstal. Trenger Hjelp
 
 I kommunenavnene så er det oppgitt når dei ulike kommunane blei oppløyst. Vi ønsker å fjerne dette slik at vi kun for navnene på selve kommunene.
 
@@ -85,7 +89,7 @@ knavn = str_replace(knavn, moenster, "fixed("(1994-2019)")")
 )
 ```
 
-# NA-Verdier
+## NA-Verdier
 
 Vi sjekker videre hvor mange NA-verdier vi har i datasettet *pm2*.
 
@@ -106,5 +110,23 @@ pm2_raw %>%
 
 Vi ser ut fra de tre kode chunkene *NA_Desc*, *NA_Tid* og *NA_Value*, at den eneste rekken som har NA-Verdier er *value* rekken.  Her har vi 2 903 NA-observasjoner.
 
-# Complete Cases
+## Complete Cases
+
+
+
+# Andel i arbeidsfør alder
+
+## Data Henting, SSB
+
+```{r}
+pop_08_17_ya_raw <- ApiData(
+  urlToData = "07459",
+  Region = knr,
+  Kjonn = c(1, 2),
+  Alder = list("agg:TredeltGrupperingB2",
+                 c("F20-64")),
+  Tid = c(as.character(2008:2017))
+)$dataset %>% 
+  select(-ContentsCode)
+```
 
