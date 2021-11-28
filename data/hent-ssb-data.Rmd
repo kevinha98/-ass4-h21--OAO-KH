@@ -154,7 +154,7 @@ pop_08_17_ya_raw <- ApiData(
 ## Data Henting, SSB **Detta e før skatt. Ikkje oppgitt om me ska ha før eller etter skatt.** ------ **Work In Progress**
 
 ```{r}
-Kvintiler <- ApiData(
+Kvintiler_08_17 <- ApiData(
   urlToData = "12558",
   Region = knr,
   Desiler = c(1*2, 9*10),
@@ -164,4 +164,24 @@ Kvintiler <- ApiData(
 )$dataset %>% 
   select(-ContentsCode, -InntektSkatt)
 ```
+
+# Utdanning
+
+## Data Henting, SSB. Både menn og Kvinner, Kort og Lang høgskoleutdanning. **Må finne ut korleis vi lager variabelen "uni_p"** -------- **Work In Progress**
+
+```{r}
+Utdanning_08_17 <- ApiData(
+  urlToData = "09429",
+  Region = knr,
+  Nivaa = c("03a", "04a"),
+  Kjonn = c(1, 2),
+  ContentsCode = "Personer",
+  Tid = c(as.character(2008:2017))
+)$dataset %>% 
+  select(-ContentsCode, -value)
+```
+
+
+
+
 
