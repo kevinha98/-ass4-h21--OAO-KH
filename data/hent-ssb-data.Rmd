@@ -149,3 +149,19 @@ pop_08_17_ya_raw <- ApiData(
   select(-ContentsCode)
 ```
 
+# Øvre og Nedre Desil/Kvintil
+
+## Data Henting, SSB **Detta e før skatt. Ikkje oppgitt om me ska ha før eller etter skatt.** ------ **Work In Progress**
+
+```{r}
+Kvintiler <- ApiData(
+  urlToData = "12558",
+  Region = knr,
+  Desiler = c(1*2, 9*10),
+  ContentsCode = "VerdiDesil",
+  InntektSkatt = "00",
+  Tid = c(as.character(2008:2017))
+)$dataset %>% 
+  select(-ContentsCode, -InntektSkatt)
+```
+
