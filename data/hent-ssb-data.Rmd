@@ -123,7 +123,7 @@ pm2_2006 <- pm2 %>%
 
 -
 
-```{rComplete_Cases_2006_2}
+```{r Complete_Cases_2006_2}
 pm2_2006 %>% 
   complete.cases() %>% 
   sum()
@@ -296,12 +296,12 @@ Utdanning_08_17 <- ApiData(
 
 ```{r}
 trade_08_17 <- ApiData(
-  urlToData = "07446",
+  urlToData = "04776",
   Region = knr,
   ContentsCode = "Value",
-  Tid = c(as.character(2008:2017)))
+  Tid = c(as.character(2008:2017))
+  )$dataset %>% 
+  select()
 ```
-
-
 
 
