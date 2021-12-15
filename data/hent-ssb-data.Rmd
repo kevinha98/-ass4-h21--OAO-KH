@@ -56,13 +56,13 @@ pm2 <- pm2_raw$dataset %>%
 head(pm2)
 ```
 
-```{r names}
+```{r Names}
 names(pm2_raw)[[1]] <- "desc"
 ```
 
 -
 
-```{r mutate}
+```{r Mutate}
 pm2 <- pm2 %>% 
   mutate(knavn = pm2_raw$desc$region) %>% 
   group_by(knr) %>% 
@@ -77,7 +77,7 @@ I kommunenavnene så er det oppgitt når dei ulike kommunane blei oppløyst. Vi 
 
 # Mønster
 
-```{r load_string}
+```{r Load_String}
 load("test_string_tib.Rdata")
 ```
 
@@ -90,19 +90,17 @@ moenster <- '\\s+\\(\\d*[19-]\\d*[2019]\\)\\s*$'
 
 -
 
-```{r}
+```{r Muterer_Moenster}
 pm2 <- pm2 %>% 
   mutate(
     knavn = str_replace(knavn, moenster, ""))
 ```
 
-------------------------------------------------
-
-## NA-Verdier - **Funka, så funka da ikkje. Gud bedre hjelpes. "Value" funke fortsatt**
+## NA-Verdier
 
 Vi sjekker videre hvor mange NA-verdier vi har i datasettet *pm2*.
 
-```{r}
+```{r NA_Verdier}
 pm2 %>% 
   map_df(is.na) %>% 
   map_df(sum) %>% 
@@ -117,8 +115,7 @@ Vi ser ut fra de tre kode chunkene *NA_Desc*, *NA_Tid* og *NA_Value*, at den ene
 
 Complete Cases, antal rekker uten NA verdier, fom. 2006 tom. 2017:
 
-
-```{r}
+```{r Complete_Cases_2006_1}
 pm2_2006 <- pm2 %>%
   filter(aar >= 2006) %>% 
   pivot_wider(
@@ -128,7 +125,7 @@ pm2_2006 <- pm2 %>%
 
 -
 
-```{r}
+```{rComplete_Cases_2006_2}
 pm2_2006 %>% 
   complete.cases() %>% 
   sum()
@@ -136,7 +133,7 @@ pm2_2006 %>%
 
 Complete Cases, antal rekker uten NA verdier, fom. 2008 tom. 2017:
 
-```{r}
+```{r Complete_Cases_2008_1}
 pm2_2008 <- pm2 %>%
   filter(aar >= 2008) %>% 
   pivot_wider(
@@ -146,10 +143,20 @@ pm2_2008 <- pm2 %>%
 
 -
 
-```{r}
+```{r Complete_Cases_2008_2}
 pm2_2008 %>% 
   complete.cases() %>% 
   sum()
+```
+
+### Konkluderer datainnsamling for gjennomsnittspris.
+
+```{r Cleaning_House}
+# Skifter navn til knr for listen av kommune nummer vi skal bruke
+# i analysen
+knr <- knr_c.c
+# Time to clean up
+rm(knr_c.c, pm2_raw)
 ```
 
 # Andel i arbeidsfør alder
