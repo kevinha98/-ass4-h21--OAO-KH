@@ -107,9 +107,7 @@ pm2 %>%
   as.tibble()
 ```
 
-
-
-Vi ser ut fra de tre kode chunkene *NA_Desc*, *NA_Tid* og *NA_Value*, at den eneste rekken som har NA-Verdier er *value* rekken.  Her har vi 2 903 NA-observasjoner.
+Vi ser ut fra de tre kode chunken *NA_Verdier* at vi har 2 903 NA-observasjoner på pm2 rekken.
 
 ## Complete Cases
 
@@ -151,12 +149,10 @@ pm2_2008 %>%
 
 ### Konkluderer datainnsamling for gjennomsnittspris.
 
+Vi trenger ikkje lengre pm2_raw så vi fjerner denne.
+
 ```{r Cleaning_House}
-# Skifter navn til knr for listen av kommune nummer vi skal bruke
-# i analysen
-knr <- knr_c.c
-# Time to clean up
-rm(knr_c.c, pm2_raw)
+rm(pm2_raw)
 ```
 
 # Andel i arbeidsfør alder
