@@ -40,97 +40,116 @@ pm2_raw <- ApiData(
   ContentsCode = "KvPris",
   Boligtype = "01",
   Tid = c(as.character(2002:2017)))
+```
 
-# Skifter navn på variablene Region, Tid og value som angitt i oppgaven
-df_pm2_raw <- data.frame(
-    knr = pm2_raw[["dataset"]]$Region,
-    aar = pm2_raw[["dataset"]]$Tid,
-    pm2 = pm2_raw[["dataset"]]$value
-    )
+-
 
-#  For å slippe å hanske med det uhåndterlig lange navnet på dette elementet skifter vi først navn på dette til “desc”.
+```{r data_og_navn}
+pm2 <- pm2_raw$dataset %>% 
+  tibble() %>% 
+  select(-Boligtype, -ContentsCode) %>% 
+  rename(
+    knr = Region,
+    aar = Tid,
+    pm2 = value
+  )
+head(pm2)
+```
+
+```{r names}
 names(pm2_raw)[[1]] <- "desc"
+```
+
+-
+
+```{r mutate}
+pm2 <- pm2 %>% 
+  mutate(knavn = pm2_raw$desc$region) %>% 
+  group_by(knr) %>% 
+  select(knr, aar, pm2, knavn)
 ```
 
 Boligtypen vi er interessert i er eneboliger. Ifra APIen til SSB så ser vi at denne er gitt ved "01". Vi har dermed satt våres boligtype i *pm2_raw* til å være "01" slik at vi kun får eneboliger i datasettet. På grunn av at vi vet at vi skal finne pris per kvadratmeter til eneboliger, så kan vi bruke denne forutsetningen til å fjerne *boligtype* og *ContentsCode* fra pm2_raw.
 
-**$dataset %>% select(-Boligtype, -ContentsCode)** --> Denne skal egentlig inn i chunken ovenfor, men det lager problem med Mutate Knavn under.
-
-## Mutate Knavn
-
-```{r knavn}
-pm2 <- pm2_raw[[1]] %>%
-  mutate(knavn = pm2_raw$desc$region)
-```
-
-## Fjerning av kommune årstal. **Trenger Hjelp**
+## Fjerning av kommune årstal.
 
 I kommunenavnene så er det oppgitt når dei ulike kommunane blei oppløyst. Vi ønsker å fjerne dette slik at vi kun for navnene på selve kommunene.
 
-```{r}
-df_pm2_raw$knavn <- str_remove(
-  string = arblos_aldersgrp$knavn,
-  pattern = fixed(" (-2019)"))
-```
-```{r}
-n <- str_remove(
-  string = pm2_raw$knavn, pattern = fixed("(1994-2019)"))
-```
+# Mønster
 
-
-```{r Kommunenavn}
+```{r load_string}
 load("test_string_tib.Rdata")
-# Legger inn regex mønster
-
-moenster <- '.fixed("(1994-2019)")'
-
-test_string_tib %>%
-mutate(
-knavn = str_replace(knavn, moenster, "fixed("(1994-2019),")")
-)
 ```
+
+-
+
+```{r Moenster}
+#Legger inn regex mønster
+moenster <- '\\s+\\(\\d*[19-]\\d*[2019]\\)\\s*$'
+```
+
+-
+
+```{r}
+pm2 <- pm2 %>% 
+  mutate(
+    knavn = str_replace(knavn, moenster, ""))
+```
+
+------------------------------------------------
 
 ## NA-Verdier - **Funka, så funka da ikkje. Gud bedre hjelpes. "Value" funke fortsatt**
 
 Vi sjekker videre hvor mange NA-verdier vi har i datasettet *pm2*.
 
-```{r NA_Desc}
-pm2_raw %>% 
-  filter(is.na(desc))
-```
-
-```{r NA_Tid}
-pm2_raw %>% 
-  filter(is.na(Tid))
-```
-
-```{r NA_Value}
+```{r}
 pm2 %>% 
-  filter(is.na(value))
+  map_df(is.na) %>% 
+  map_df(sum) %>% 
+  as.tibble()
 ```
+
+
 
 Vi ser ut fra de tre kode chunkene *NA_Desc*, *NA_Tid* og *NA_Value*, at den eneste rekken som har NA-Verdier er *value* rekken.  Her har vi 2 903 NA-observasjoner.
 
-## Complete Cases -- **Fekk Complete.Cases te å fungera, men må finna ut korleis me får frå 2006/2008, i stadenfor 2002**
+## Complete Cases
 
 Complete Cases, antal rekker uten NA verdier, fom. 2006 tom. 2017:
 
-```{r}
-complete.cases(df_pm2_raw)
-```
 
 ```{r}
-complete.data_06_17 <- df_pm2_raw[complete.cases(df_pm2_raw), ]
+pm2_2006 <- pm2 %>%
+  filter(aar >= 2006) %>% 
+  pivot_wider(
+    names_from = aar,
+    values_from = pm2)
+```
+
+-
+
+```{r}
+pm2_2006 %>% 
+  complete.cases() %>% 
+  sum()
 ```
 
 Complete Cases, antal rekker uten NA verdier, fom. 2008 tom. 2017:
 
 ```{r}
-complete.cases(df_pm2_raw)
+pm2_2008 <- pm2 %>%
+  filter(aar >= 2008) %>% 
+  pivot_wider(
+    names_from = aar,
+    values_from = pm2)
 ```
 
+-
+
 ```{r}
-complete.data_08_17 <- df_pm2_raw[complete.cases(df_pm2_raw), ]
+pm2_2008 %>% 
+  complete.cases() %>% 
+  sum()
 ```
 
 # Andel i arbeidsfør alder
@@ -181,6 +200,17 @@ Utdanning_08_17 <- ApiData(
   select(-ContentsCode, -value)
 ```
 
+# Handelsomsetning
+
+## Data Henting, SSB.
+
+```{r}
+trade_08_17 <- ApiData(
+  urlToData = "07446",
+  Region = knr,
+  ContentsCode = "Value",
+  Tid = c(as.character(2008:2017)))
+```
 
 
 
