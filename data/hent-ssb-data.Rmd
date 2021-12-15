@@ -168,8 +168,25 @@ pop_08_17_ya_raw <- ApiData(
                  c("F20-64")),
   Tid = c(as.character(2008:2017))
 )$dataset %>% 
-  select(-ContentsCode)
+  select(-ContentsCode, -Alder)
 ```
+
+-
+
+```{r}
+pop_pivot <- pop_08_17_ya_raw %>%
+  pivot_wider(
+    names_from = Kjonn,
+    values_from = value)
+```
+
+
+
+
+```{r}
+dim(pop_08_17_ya_raw)
+```
+
 
 # Øvre og Nedre Desil/Kvintil
 
