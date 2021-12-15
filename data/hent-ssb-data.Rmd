@@ -159,7 +159,7 @@ rm(pm2_raw)
 
 ## Data Henting, SSB
 
-```{r}
+```{r YA_Pop}
 pop_08_17_ya_raw <- ApiData(
   urlToData = "07459",
   Region = knr,
@@ -173,36 +173,106 @@ pop_08_17_ya_raw <- ApiData(
 
 -
 
-```{r}
-pop_pivot <- pop_08_17_ya_raw %>%
+```{r Pivot_Wider_Pop}
+pop_08_17_ya <- pop_08_17_ya_raw %>%
   pivot_wider(
     names_from = Kjonn,
     values_from = value)
 ```
 
+-
 
-
-
-```{r}
-dim(pop_08_17_ya_raw)
+```{r Names}
+names(pop_08_17_ya)[[1]] <- "knr"
+names(pop_08_17_ya)[[2]] <- "aar"
+names(pop_08_17_ya)[[3]] <- "ya_menn"
+names(pop_08_17_ya)[[4]] <- "ya_kvinner"
 ```
 
+-
+
+```{r Ya_Total}
+pop_08_17_ya <- pop_08_17_ya %>% 
+  mutate(ya_Total = ya_menn+ya_kvinner)
+```
+
+-
+
+# DIM - Må Fiksast
+
+```{r Dim}
+dim(pop_08_17_ya)
+```
+
+## Data Henting 2, SSB
+
+**Stuck. Finner ikkje ut korleis eg legger saman menn 0-17 og 18+ i ei kolonne, samme med kvinner**
+
+```{r Total_Pop}
+pop_08_17_raw <- ApiData(
+  urlToData = "07459",
+  Region = knr,
+  Kjonn = c(1, 2),
+  Alder = list("agg:TodeltGrupperingB",
+                 c("H17", "H18")),
+  Tid = c(as.character(2008:2017))
+)$dataset %>% 
+  select(-ContentsCode, -Alder)
+```
+
+-
+
+```{r}
+pop_08_17 <- pop_08_17_raw %>%
+  pivot_wider(
+    names_from = Kjonn,
+    values_from = value)
+```
+
+-
+
+```{r Names}
+names(pop_08_17)[[1]] <- "knr"
+names(pop_08_17)[[2]] <- "aar"
+names(pop_08_17)[[3]] <- "Menn_t"
+names(pop_08_17)[[4]] <- "Kvinner_t"
+```
+
+-
+
+```{r}
+pop_08_17 <- pop_08_17 %>% 
+  mutate(Total_t = Menn_t + Kvinner_t)
+```
 
 # Øvre og Nedre Desil/Kvintil
 
 ## Data Henting, SSB **Detta e før skatt. Ikkje oppgitt om me ska ha før eller etter skatt.** ------ **Work In Progress**
 
 ```{r}
-Kvintiler_08_17 <- ApiData(
+kvintiler_08_17_raw <- ApiData(
   urlToData = "12558",
   Region = knr,
-  Desiler = c(1*2, 9*10),
+  Desiler = c(1, 2, 9, 10),
   ContentsCode = "VerdiDesil",
   InntektSkatt = "00",
   Tid = c(as.character(2008:2017))
 )$dataset %>% 
-  select(-ContentsCode, -InntektSkatt)
+  select(Region, Desiler, Tid, value)
 ```
+
+```{r}
+kvintiler_08_17 <- kvintiler_08_17_raw %>%
+  pivot_wider(
+    names_from = Desiler,
+    values_from = value)
+```
+
+```{r}
+kvintiler_08_17 <- kvintiler_08_17 %>% 
+  mutate(kvintil_1 = 01 + 02)
+```
+
 
 # Utdanning
 
