@@ -378,7 +378,7 @@ Utdanning_08_17 <- ApiData(
   select(-ContentsCode, -value)
 ```
 
-# Handelsomsetning
+# Handelsomsetning per innbygger
 
 ## Data Henting, SSB.
 
@@ -390,6 +390,8 @@ trade_08_17 <- ApiData(
   Tid = c(as.character(2008:2017))
   )$dataset %>% 
   select()
+
+# Kall variabelen for "Trade_pc"
 ```
 
 
