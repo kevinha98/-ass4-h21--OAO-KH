@@ -410,7 +410,7 @@ utdanning_08_17_raw <- ApiData(
   urlToData = "09429",
   Region = knr,
   Nivaa = c("03a", "04a"),
-  Kjonn = c("0"),
+  Kjonn = TRUE,
   ContentsCode = "PersonerProsent",
   Tid = c(as.character(2008:2017))
 )
@@ -445,6 +445,30 @@ uni_p <- uni_p_raw
 ```{r}
 head(uni_p, n=5)
 ```
+
+## Rekoding
+
+```{r Rekoder_uni_k_&_l}
+uni_p <- uni_p %>% 
+  mutate(
+    nivaa = fct_recode(nivaa,
+                       "uni_k" = "Universitets- og høgskolenivå, kort",
+                       "uni_l" = "Universitets- og høgskolenivå, lang")
+)
+```
+
+-
+
+```{r Rekoder_kjønn}
+uni_p <- uni_p %>% 
+  mutate(
+    Kjonn = fct_recode(Kjonn, 
+                       "mf" = "Begge kjønn",
+                       "f" = "Kvinner",
+                       "m" = "Menn")
+)
+```
+
 
 
 # Handelsomsetning per innbygger
