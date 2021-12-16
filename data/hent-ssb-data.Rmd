@@ -414,7 +414,43 @@ Utdanning_08_17 <- ApiData(
   ContentsCode = "Personer",
   Tid = c(as.character(2008:2017))
 )$dataset %>% 
-  select(-ContentsCode, -value)
+  select(-ContentsCode)
+```
+
+-
+
+```{r}
+utdanning_08_17 <- utdanning_08_17_raw %>% 
+  pivot_wider(
+    names_from = "Nivaa",
+    values_from = value)
+```
+
+-
+
+```{r Navn}
+names(utdanning_08_17)[[1]] <- "knr"
+names(utdanning_08_17)[[2]] <- "Kjonn"
+names(utdanning_08_17)[[3]] <- "aar"
+names(utdanning_08_17)[[5]] <- "Utd_Kort"
+names(utdanning_08_17)[[6]] <- "Utd_Lang"
+```
+
+-
+
+```{r}
+utdanning_08_17 <- utdanning_08_17 %>% 
+  pivot_wider(
+    names_from = knr,
+    values_from = Kjonn)
+```
+
+-
+
+```{r}
+utdanning_08_17 <- utdanning_08_17 %>% 
+rename(Universitets- og høgskolenviå, kort = '03a',
+       Universitets- og høgskolenviå, lang = '04a')
 ```
 
 # Handelsomsetning per innbygger
