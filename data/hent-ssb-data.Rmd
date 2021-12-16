@@ -57,12 +57,16 @@ pm2 <- pm2_raw$dataset %>%
     pm2 = value)
 ```
 
-```{r}
+-
+
+```{r Velger_Variabler}
 pm2 <- pm2 %>% 
 select(knr, aar, pm2)
 ```
 
-```{r}
+-
+
+```{r Head}
 head(pm2)
 ```
 
@@ -169,7 +173,7 @@ pm2 <- pm2_2008 %>%
 
 Vi trenger ikkje lengre pm2_raw så vi fjerner denne.
 
-```{r Cleaning_House}
+```{r Cleaning_House_Unos}
 rm(pm2_raw, test_string_tib)
 ```
 
@@ -293,7 +297,7 @@ pop_08_17_ya_p <- merge(pop_08_17, pop_08_17_ya)
 
 ### Muterer nye variabler prosentvis yrkesaktiv alder
 
-```{r}
+```{r Muterer_Variabler}
 pop_08_17_ya_p <- pop_08_17_ya_p %>% 
   mutate(Menn_ya_p = ya_menn/Menn_t*100) %>% 
   mutate(Kvinner_ya_p = ya_kvinner/Kvinner_t*100) %>% 
@@ -302,14 +306,14 @@ pop_08_17_ya_p <- pop_08_17_ya_p %>%
 
 -
 
-```{r}
+```{r Velger_Variabler}
 pop_08_17_ya_p <- pop_08_17_ya_p %>% 
   select(knr, aar, Menn_ya_p, Kvinner_ya_p, Totalt_ya_p)
 ```
 
 Sjekker om vi har gjort rett
 
-```{r}
+```{r Head}
 head(pop_08_17_ya_p)
 ```
 
@@ -321,13 +325,13 @@ pm2 <- merge(pm2, pop_08_17_ya)
 
 ## Rydder opp rot
 
-```{r Cleaning_House_Again}
+```{r Cleaning_House_Dos}
 rm(pop_08_17_raw, pop_08_17_ya_raw, pm2_2006, pm2_2008, pop_08_17, pop_08_17_ya)
 ```
 
 # Øvre og Nedre Desil/Kvintil
 
-## Data Henting, SSB **Detta e før skatt. Ikkje oppgitt om me ska ha før eller etter skatt.** ------ **Work In Progress**
+## Data Henting, SSB
 
 ```{r Henter_Data}
 kvintiler_08_17_raw <- ApiData(
@@ -371,15 +375,29 @@ names(kvintiler_08_17)[[6]] <- "Desil_10"
 
 ```{r Muterer_Variabler}
 kvintiler_08_17 <- kvintiler_08_17 %>% 
-  mutate(kvintil_1 = Desil_1 + Desil_2) %>% 
-  mutate(kvintil_2 = Desil_9 + Desil_10)
+  mutate(inc_k1 = Desil_1 + Desil_2) %>% 
+  mutate(inc_k5 = Desil_9 + Desil_10)
 ```
 
 -
 
 ```{r Velger_Variabler}
 kvintiler_08_17 <- kvintiler_08_17 %>%
-  select(knr, aar, kvintil_1, kvintil_2)
+  select(knr, aar, inc_k1, inc_k5)
+```
+
+-
+
+```{r Merger_Datasett}
+pm2 <- merge(pm2, kvintiler_08_17)
+```
+
+-
+
+Rydder opp rot, atter ein gong.
+
+```{r Cleaning_House_Tres}
+rm(kvintiler_08_17, kvintiler_08_17_raw, pop_08_17_ya_p)
 ```
 
 
