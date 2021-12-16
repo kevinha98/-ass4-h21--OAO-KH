@@ -442,10 +442,6 @@ uni_p_raw %>%
 
 -
 
-
-
--
-
 ```{r}
 uni_p <- uni_p_raw
 ```
@@ -489,10 +485,27 @@ uni_p <- uni_p %>%
       values_from = uni_p)
 ```
 
+-
+
+### Sammenslåing
+
+```{r}
+pm2 <- merge(pm2, uni_p)
+```
+
+
+#### Rydder rot enda ein atter så gang
+
+```{r Cleaning_House_Cuatro}
+rm(uni_p, uni_p_raw, utdanning_08_17_raw)
+```
+
+
 # Handelsomsetning per innbygger
 
 ## Datauthenting, SSB.
 **Hvordan lager vi variabelen "Trade_pc"**
+
 ```{r}
 trade_08_17 <- ApiData(
   urlToData = "04776",
