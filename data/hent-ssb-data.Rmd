@@ -217,7 +217,7 @@ pop_08_17_raw <- ApiData(
                  c("H17", "H18")),
   Tid = c(as.character(2008:2017))
 )$dataset %>% 
-  select(-ContentsCode, -Alder)
+  select(-ContentsCode)
 ```
 
 -
@@ -229,13 +229,20 @@ pop_08_17 <- pop_08_17_raw %>%
     values_from = value)
 ```
 
+
+```{r}
+pop_08_17 <- pop_08_17 %>% 
+  mutate(Total_t = Menn_t + Kvinner_t)
+```
+
+
 -
 
 ```{r Names}
 names(pop_08_17)[[1]] <- "knr"
 names(pop_08_17)[[2]] <- "aar"
-names(pop_08_17)[[3]] <- "Menn_t"
-names(pop_08_17)[[4]] <- "Kvinner_t"
+names(pop_08_17)[[4]] <- "Menn_t"
+names(pop_08_17)[[5]] <- "Kvinner_t"
 ```
 
 -
