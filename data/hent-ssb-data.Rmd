@@ -189,6 +189,7 @@ pop_08_17_ya_raw <- ApiData(
   select(-ContentsCode, -Alder)
 ```
 
+-
 
 ```{r Pivot_Wider_Pop}
 pop_08_17_ya <- pop_08_17_ya_raw %>%
@@ -324,12 +325,11 @@ pm2 <- merge(pm2, pop_08_17_ya)
 rm(pop_08_17_raw, pop_08_17_ya_raw, pm2_2006, pm2_2008, pop_08_17, pop_08_17_ya)
 ```
 
-
 # Øvre og Nedre Desil/Kvintil
 
 ## Data Henting, SSB **Detta e før skatt. Ikkje oppgitt om me ska ha før eller etter skatt.** ------ **Work In Progress**
 
-```{r}
+```{r Henter_Data}
 kvintiler_08_17_raw <- ApiData(
   urlToData = "12558",
   Region = knr,
@@ -348,7 +348,7 @@ kvintiler_08_17_raw <- ApiData(
 
 -
 
-```{r}
+```{r Pivot_Wider}
 #Nu går alt så meget bedre ;-)
 kvintiler_08_17 <- kvintiler_08_17_raw %>%
   pivot_wider(
@@ -356,9 +356,30 @@ kvintiler_08_17 <- kvintiler_08_17_raw %>%
     values_from = value)
 ```
 
-```{r}
+-
+
+```{r Navngjer_Variabler}
+names(kvintiler_08_17)[[1]] <- "knr"
+names(kvintiler_08_17)[[2]] <- "aar"
+names(kvintiler_08_17)[[3]] <- "Desil_1"
+names(kvintiler_08_17)[[4]] <- "Desil_2"
+names(kvintiler_08_17)[[5]] <- "Desil_9"
+names(kvintiler_08_17)[[6]] <- "Desil_10"
+```
+
+-
+
+```{r Muterer_Variabler}
 kvintiler_08_17 <- kvintiler_08_17 %>% 
-  mutate(kvintil_1 = 01 + 02)
+  mutate(kvintil_1 = Desil_1 + Desil_2) %>% 
+  mutate(kvintil_2 = Desil_9 + Desil_10)
+```
+
+-
+
+```{r Velger_Variabler}
+kvintiler_08_17 <- kvintiler_08_17 %>%
+  select(knr, aar, kvintil_1, kvintil_2)
 ```
 
 
