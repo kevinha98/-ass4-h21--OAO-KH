@@ -54,11 +54,18 @@ pm2 <- pm2_raw$dataset %>%
   rename(
     knr = Region,
     aar = Tid,
-    pm2 = value
-  )
+    pm2 = value)
+```
 
+```{r}
+pm2 <- pm2 %>% 
+select(knr, aar, pm2)
+```
+
+```{r}
 head(pm2)
 ```
+
 
 ```{r Names}
 names(pm2_raw)[[1]] <- "desc"
@@ -163,7 +170,7 @@ pm2 <- pm2_2008 %>%
 Vi trenger ikkje lengre pm2_raw så vi fjerner denne.
 
 ```{r Cleaning_House}
-rm(pm2_raw)
+rm(pm2_raw, test_string_tib)
 ```
 
 # Andel i arbeidsfør alder
@@ -213,15 +220,11 @@ pop_08_17_ya <- pop_08_17_ya %>%
 
 -
 
-# DIM - Må Fiksast
-
 ```{r Dim}
 dim(pop_08_17_ya)
 ```
 
 ## Data Henting 2, SSB
-
-**Stuck. Finner ikkje ut korleis eg legger saman menn 0-17 og 18+ i ei kolonne, samme med kvinner**
 
 ```{r Total_Pop}
 pop_08_17_raw <- ApiData(
@@ -281,6 +284,47 @@ pop_08_17 <- pop_08_17 %>%
 
 -
 
+## Sammenslåing
+
+```{r Sammenslåing_av_Datasett}
+pop_08_17_ya_p <- merge(pop_08_17, pop_08_17_ya)
+```
+
+### Muterer nye variabler prosentvis yrkesaktiv alder
+
+```{r}
+pop_08_17_ya_p <- pop_08_17_ya_p %>% 
+  mutate(Menn_ya_p = ya_menn/Menn_t*100) %>% 
+  mutate(Kvinner_ya_p = ya_kvinner/Kvinner_t*100) %>% 
+  mutate(Totalt_ya_p = ya_Total/Totalt_t*100)
+```
+
+-
+
+```{r}
+pop_08_17_ya_p <- pop_08_17_ya_p %>% 
+  select(knr, aar, Menn_ya_p, Kvinner_ya_p, Totalt_ya_p)
+```
+
+Sjekker om vi har gjort rett
+
+```{r}
+head(pop_08_17_ya_p)
+```
+
+Legger til *ya* variablene frå datasettet **pop_08_17_ya_p** inn i datasettet **pm2**.
+
+```{r Merger_Pm2_og_Ya}
+pm2 <- merge(pm2, pop_08_17_ya)
+```
+
+## Rydder opp rot
+
+```{r Cleaning_House_Again}
+rm(pop_08_17_raw, pop_08_17_ya_raw, pm2_2006, pm2_2008, pop_08_17, pop_08_17_ya)
+```
+
+
 # Øvre og Nedre Desil/Kvintil
 
 ## Data Henting, SSB **Detta e før skatt. Ikkje oppgitt om me ska ha før eller etter skatt.** ------ **Work In Progress**
@@ -301,6 +345,8 @@ kvintiler_08_17_raw <- ApiData(
   )$dataset %>% 
   select(Region, Desiler, Tid, value)
 ```
+
+-
 
 ```{r}
 #Nu går alt så meget bedre ;-)
