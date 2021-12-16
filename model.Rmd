@@ -26,9 +26,15 @@ library(viridis)
 knitr::opts_chunk$set(echo=FALSE, include = FALSE)
 ```
 
-Her foretar vi selve analysen
+# Modeller
 
-```{r}
-pm2 <- read_csv("~/Dropbox/Master of Science in Business/Semester 1/MSB105 Data Science/Ass4/ass4-h21--OAO-KH/data/pm2.csv", show_col_types = FALSE)
+## Leser inn data
+
+```{r reading file}
+pm2 <- read_csv("data/pm2.csv", show_col_types = FALSE)
 ```
+
+## Modell
+
+# Dummy
 
