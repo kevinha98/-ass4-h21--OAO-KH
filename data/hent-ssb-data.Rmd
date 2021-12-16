@@ -23,15 +23,15 @@ library(lubridate)
 ```
 
 ```{r knr}
-#Vector med relevante kommunenummer
+# Vector med relevante kommunenummer
 load("knr.Rdata")
 ```
 
-# Gjennomsnittleg Kvadratmeterpris
+# Gjennomsnittlig kvadratmeterpris
 
-I denne oppgava skal vi studere prisen per kvadratmeter i ein utvalgt bunke av kommuner. Dataene vi skal bruke kommer ifra SSB. For at vi skal kunne gjennomføre dette må vi dermed hente dataene våres fra SSB.
+I denne oppgaven skal vi studere prisen per kvadratmeter i et bestemt utvalg av kommuner. Oppgaven baserer seg på data som stammer fra, og er produsert av SSB. Følgelig henter vi ut dataene derfra.
 
-## Data Henting, SSB
+## Datauthenting, SSB
 
 ```{r pm2_raw}
 pm2_raw <- ApiData(
@@ -59,7 +59,7 @@ pm2 <- pm2_raw$dataset %>%
 
 -
 
-```{r Velger_Variabler}
+```{r Velger Variabler}
 pm2 <- pm2 %>% 
 select(knr, aar, pm2)
 ```
@@ -85,11 +85,11 @@ pm2 <- pm2 %>%
   select(knr, aar, pm2, knavn)
 ```
 
-Boligtypen vi er interessert i er eneboliger. Ifra APIen til SSB så ser vi at denne er gitt ved "01". Vi har dermed satt våres boligtype i *pm2_raw* til å være "01" slik at vi kun får eneboliger i datasettet. På grunn av at vi vet at vi skal finne pris per kvadratmeter til eneboliger, så kan vi bruke denne forutsetningen til å fjerne *boligtype* og *ContentsCode* fra pm2_raw.
+Boligtypen vi er interessert i er eneboliger. Ifra APIen til SSB så ser vi at denne er gitt ved "01". Vi har dermed satt våres boligtype i *pm2_raw* til å være "01" slik at vi kun får eneboliger i datasettet. Ettersom vi vet at vi skal finne pris per kvadratmeter til eneboliger, så kan vi bruke denne forutsetningen til å fjerne *boligtype* og *ContentsCode* fra pm2_raw.
 
-## Fjerning av kommune årstal.
+## Fjerning av kommune årstall.
 
-I kommunenavnene så er det oppgitt når dei ulike kommunane blei oppløyst. Vi ønsker å fjerne dette slik at vi kun for navnene på selve kommunene.
+I kommunenavnene er det oppgitt når de ulike kommunene ble oppløst. Vi ønsker å fjerne dette slik at vi kun får navnene på selve kommunene.
 
 # Mønster
 
@@ -100,7 +100,7 @@ load("test_string_tib.Rdata")
 -
 
 ```{r Moenster}
-#Legger inn regex mønster
+# Legger inn regex mønster
 moenster <- '\\s*\\([\\d\\s-]*\\d*\\)\\s*$'
 ```
 
@@ -123,11 +123,11 @@ pm2 %>%
   as.tibble()
 ```
 
-Vi ser ut fra de tre kode chunken *NA_Verdier* at vi har 2 903 NA-observasjoner på pm2 rekken.
+Vi ser ut fra chunken *NA_Verdier* at vi har 2 903 NA-observasjoner på pm2-rekken.
 
 ## Complete Cases
 
-Complete Cases, antal rekker uten NA verdier, fom. 2006 tom. 2017:
+Complete Cases, antall rekker uten NA verdier, fom. 2006 tom. 2017:
 
 ```{r Complete_Cases_2006_1}
 pm2_2006 <- pm2 %>%
@@ -145,7 +145,7 @@ pm2_2006 %>%
   sum()
 ```
 
-Complete Cases, antal rekker uten NA verdier, fom. 2008 tom. 2017:
+Complete Cases, antall rekker uten NA-verdier, f.o.m. 2008 t.o.m. 2017:
 
 ```{r Complete_Cases_2008_1}
 pm2_2008 <- pm2 %>%
@@ -171,7 +171,7 @@ pm2 <- pm2_2008 %>%
 
 ### Konkluderer datainnsamling for gjennomsnittspris.
 
-Vi trenger ikkje lengre pm2_raw så vi fjerner denne.
+Vi trenger ikke lengre pm2_raw og fjerner denne.
 
 ```{r Cleaning_House_Unos}
 rm(pm2_raw, test_string_tib)
@@ -179,7 +179,7 @@ rm(pm2_raw, test_string_tib)
 
 # Andel i arbeidsfør alder
 
-## Data Henting, SSB
+## Datauthenting, SSB
 
 ```{r YA_Pop}
 pop_08_17_ya_raw <- ApiData(
@@ -229,7 +229,7 @@ pop_08_17_ya <- pop_08_17_ya %>%
 dim(pop_08_17_ya)
 ```
 
-## Data Henting 2, SSB
+## Datauthenting 2, SSB
 
 ```{r Total_Pop}
 pop_08_17_raw <- ApiData(
@@ -331,7 +331,7 @@ rm(pop_08_17_raw, pop_08_17_ya_raw, pm2_2006, pm2_2008, pop_08_17, pop_08_17_ya)
 
 # Øvre og Nedre Desil/Kvintil
 
-## Data Henting, SSB
+## Datauthenting, SSB
 
 ```{r Henter_Data}
 kvintiler_08_17_raw <- ApiData(
@@ -394,7 +394,7 @@ pm2 <- merge(pm2, kvintiler_08_17)
 
 -
 
-Rydder opp rot, atter ein gong.
+Rydder opp rot, atter en gang
 
 ```{r Cleaning_House_Tres}
 rm(kvintiler_08_17, kvintiler_08_17_raw, pop_08_17_ya_p)
@@ -403,7 +403,7 @@ rm(kvintiler_08_17, kvintiler_08_17_raw, pop_08_17_ya_p)
 
 # Utdanning
 
-## Data Henting, SSB. Både menn og Kvinner, Kort og Lang høgskoleutdanning. **Må finne ut korleis vi lager variabelen "uni_p"** -------- **Work In Progress**
+## Datauthenting, SSB. Både menn og Kvinner, Kort og Lang høyskoleutdanning. **Må finne ut korleis vi lager variabelen "uni_p"** -------- **Work In Progress**
 
 ```{r}
 Utdanning_08_17 <- ApiData(
@@ -419,7 +419,7 @@ Utdanning_08_17 <- ApiData(
 
 # Handelsomsetning per innbygger
 
-## Data Henting, SSB.
+## Datauthenting, SSB.
 
 ```{r}
 trade_08_17 <- ApiData(
