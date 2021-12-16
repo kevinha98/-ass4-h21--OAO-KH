@@ -314,7 +314,7 @@ pop_08_17_ya_p <- pop_08_17_ya_p %>%
 Sjekker om vi har gjort rett
 
 ```{r Head}
-head(pop_08_17_ya_p)
+head(pop_08_17_ya_p, n=5)
 ```
 
 Legger til *ya* variablene frå datasettet **pop_08_17_ya_p** inn i datasettet **pm2**.
@@ -510,12 +510,41 @@ rm(uni_p, uni_p_raw, utdanning_08_17_raw)
 trade_08_17 <- ApiData(
   urlToData = "04776",
   Region = knr,
-  ContentsCode = "Value",
-  Tid = c(as.character(2008:2017))
-  )$dataset %>% 
-  select()
-
-# Kall variabelen for "Trade_pc"
+  Tid = c(as.character(2008:2017)))
 ```
+
+-
+
+```{r}
+trade_pc <- tibble(
+  knr = trade_08_17$dataset$Region,
+  aar = trade_08_17$dataset$Tid,
+  value = trade_08_17$dataset$value)
+```
+
+-
+
+### Sammenslåing
+
+```{r}
+pm2 <- merge(pm2, trade_pc)
+```
+
+#### Fjerner rot
+
+```{r}
+rm(trade_08_17, trade_pc)
+```
+
+# Avslutter med å kontrollsjekke
+
+```{r}
+names(pm2)
+```
+
+
+# Skriver .csv fil
+
+write.table(pm2, file="pm2.csv", sep = ",")
 
 
