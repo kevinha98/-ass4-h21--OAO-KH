@@ -436,13 +436,24 @@ uni_p_raw <- tibble(
 -
 
 ```{r}
+uni_p_raw %>% 
+  head(uni_p_raw, n=5)
+```
+
+-
+
+
+
+-
+
+```{r}
 uni_p <- uni_p_raw
 ```
 
 -
 
 ```{r}
-head(uni_p, n=5)
+head(uni_p, n=8)
 ```
 
 ## Rekoding
@@ -472,14 +483,11 @@ uni_p <- uni_p %>%
 
 ```{r}
 uni_p <- uni_p %>% 
-  mutate(
-    uni_p = case_when(
-      uni_p %in% c("uni_k") ~ "f",
-      TRUE ~ uni_p)
-    )
-  )
+  pivot_wider(
+    id_cols = c("knr", "aar"),
+      names_from = c(Kjonn, nivaa),
+      values_from = uni_p)
 ```
-
 
 # Handelsomsetning per innbygger
 
