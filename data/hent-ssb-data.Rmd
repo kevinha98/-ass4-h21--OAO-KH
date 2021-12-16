@@ -473,7 +473,10 @@ uni_p <- uni_p %>%
 ```{r}
 uni_p <- uni_p %>% 
   mutate(
-    
+    uni_p = case_when(
+      uni_p %in% c("uni_k") ~ "f",
+      TRUE ~ uni_p)
+    )
   )
 ```
 
