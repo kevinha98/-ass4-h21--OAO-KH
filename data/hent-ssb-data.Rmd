@@ -40,9 +40,7 @@ pm2_raw <- ApiData(
   ContentsCode = "KvPris",
   Boligtype = "01",
   Tid = c(
-    as.character(2002:2017)
-          )
-  )
+    as.character(2002:2017)))
 ```
 
 -
@@ -59,18 +57,6 @@ pm2 <- pm2_raw$dataset %>%
 
 -
 
-```{r Velger Variabler}
-pm2 <- pm2 %>% 
-select(knr, aar, pm2)
-```
-
--
-
-```{r Head}
-head(pm2)
-```
-
-
 ```{r Names}
 names(pm2_raw)[[1]] <- "desc"
 ```
@@ -81,9 +67,24 @@ names(pm2_raw)[[1]] <- "desc"
 pm2 <- pm2 %>% 
   mutate(knavn = pm2_raw$desc$region) %>% 
 # vent med gruppering
-#  group_by(knr) %>% 
+# group_by(knr) %>% 
   select(knr, aar, pm2, knavn)
 ```
+
+-
+
+```{r Velger Variabler}
+pm2 <- pm2 %>% 
+select(knr, knavn, aar, pm2)
+```
+
+-
+
+```{r Head}
+head(pm2)
+```
+
+-
 
 Boligtypen vi er interessert i er eneboliger. Ifra APIen til SSB så ser vi at denne er gitt ved "01". Vi har dermed satt våres boligtype i *pm2_raw* til å være "01" slik at vi kun får eneboliger i datasettet. Ettersom vi vet at vi skal finne pris per kvadratmeter til eneboliger, så kan vi bruke denne forutsetningen til å fjerne *boligtype* og *ContentsCode* fra pm2_raw.
 
@@ -163,11 +164,12 @@ pm2_2008 %>%
   sum()
 ```
 
+# Denne roter med pm2 variabelen. **Trenger hjelp**
+
 ```{r Removing_NA}
 pm2 <- pm2_2008 %>% 
   na.omit(pm2)
 ```
-
 
 ### Konkluderer datainnsamling for gjennomsnittspris.
 
@@ -198,13 +200,10 @@ pop_08_17_ya_raw <- ApiData(
 ```{r Pivot_Wider_Pop}
 pop_08_17_ya <- pop_08_17_ya_raw %>%
   pivot_wider(
-    # Med var navnene dere bruker
     id_cols = c(Region, Tid),
     names_from = Kjonn,
-    # names prefix er ofte grei å bruke for å få variabelnavn R liker
     names_prefix = "sex",
     values_from = value)
-# så kan dere regne ut totalt = sex1 + sex2 etc
 ```
 
 -
@@ -228,6 +227,13 @@ pop_08_17_ya <- pop_08_17_ya %>%
 ```{r Dim}
 dim(pop_08_17_ya)
 ```
+
+-
+
+```{r}
+names(pop_08_17_ya)
+```
+
 
 ## Datauthenting 2, SSB
 
@@ -289,6 +295,18 @@ pop_08_17 <- pop_08_17 %>%
 
 -
 
+```{r}
+dim(pop_08_17)
+```
+
+-
+
+```{r}
+names(pop_08_17)
+```
+
+-
+
 ## Sammenslåing
 
 ```{r Sammenslåing_av_Datasett}
@@ -320,8 +338,10 @@ head(pop_08_17_ya_p, n=5)
 Legger til *ya* variablene frå datasettet **pop_08_17_ya_p** inn i datasettet **pm2**.
 
 ```{r Merger_Pm2_og_Ya}
-pm2 <- merge(pm2, pop_08_17_ya)
+pm2 <- merge(pm2, pop_08_17_ya_p)
 ```
+
+-
 
 ## Rydder opp rot
 
@@ -542,9 +562,35 @@ rm(trade_08_17, trade_pc)
 names(pm2)
 ```
 
+-
+
+```{r}
+pm2 <- pm2 %>% 
+  select(knr, aar, knavn, Menn_ya_p, Kvinner_ya_p, Totalt_ya_p, inc_k1, inc_k5, mf_uni_k, m_uni_k, f_uni_k, mf_uni_l, m_uni_l, f_uni_l, value)
+```
+
+Endrer navn på *value* då denne skal no heite **Trade_pc**.
+
+```{r}
+names(pm2)[[15]] <- "Trade_pc"
+```
+
+-
+
+```{r}
+pm2 %>%
+  select(knr:inc_k5) %>%
+  head(n=8)
+```
+
+-
+
+```{r}
+pm2 %>%
+  select(uni_k_mf:Trade_pc) %>%
+  head(n=8)
+```
 
 # Skriver .csv fil
 
 write.table(pm2, file="pm2.csv", sep = ",")
-
-
