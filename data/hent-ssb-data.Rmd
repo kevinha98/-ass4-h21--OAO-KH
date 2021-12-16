@@ -406,52 +406,46 @@ rm(kvintiler_08_17, kvintiler_08_17_raw, pop_08_17_ya_p)
 ## Datauthenting, SSB. Både menn og Kvinner, Kort og Lang høyskoleutdanning. **Må finne ut korleis vi lager variabelen "uni_p"** -------- **Work In Progress**
 
 ```{r}
-Utdanning_08_17 <- ApiData(
+utdanning_08_17_raw <- ApiData(
   urlToData = "09429",
   Region = knr,
   Nivaa = c("03a", "04a"),
-  Kjonn = c(1, 2),
-  ContentsCode = "Personer",
+  Kjonn = c("0"),
+  ContentsCode = "PersonerProsent",
   Tid = c(as.character(2008:2017))
-)$dataset %>% 
-  select(-ContentsCode)
+)
 ```
 
 -
 
 ```{r}
-utdanning_08_17 <- utdanning_08_17_raw %>% 
-  pivot_wider(
-    names_from = "Nivaa",
-    values_from = value)
-```
-
--
-
-```{r Navn}
-names(utdanning_08_17)[[1]] <- "knr"
-names(utdanning_08_17)[[2]] <- "Kjonn"
-names(utdanning_08_17)[[3]] <- "aar"
-names(utdanning_08_17)[[5]] <- "Utd_Kort"
-names(utdanning_08_17)[[6]] <- "Utd_Lang"
+uni_p_raw <- utdanning_08_17_raw
 ```
 
 -
 
 ```{r}
-utdanning_08_17 <- utdanning_08_17 %>% 
-  pivot_wider(
-    names_from = knr,
-    values_from = Kjonn)
+uni_p_raw <- tibble(
+  knr = uni_p_raw$dataset$Region,
+  aar = uni_p_raw$dataset$Tid,
+  Kjonn = uni_p_raw$`09429: Personer 16 år og over, etter region, nivå, kjønn, statistikkvariabel og år`$kjønn,
+  nivaa = uni_p_raw$`09429: Personer 16 år og over, etter region, nivå, kjønn, statistikkvariabel og år`$nivå,
+  uni_p = uni_p_raw$dataset$value
+)
 ```
 
 -
 
 ```{r}
-utdanning_08_17 <- utdanning_08_17 %>% 
-rename(Universitets- og høgskolenviå, kort = '03a',
-       Universitets- og høgskolenviå, lang = '04a')
+uni_p <- uni_p_raw
 ```
+
+-
+
+```{r}
+head(uni_p, n=5)
+```
+
 
 # Handelsomsetning per innbygger
 
