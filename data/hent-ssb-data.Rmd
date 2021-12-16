@@ -420,7 +420,7 @@ Utdanning_08_17 <- ApiData(
 # Handelsomsetning per innbygger
 
 ## Datauthenting, SSB.
-
+**Hvordan lager vi variabelen "Trade_pc"**
 ```{r}
 trade_08_17 <- ApiData(
   urlToData = "04776",
