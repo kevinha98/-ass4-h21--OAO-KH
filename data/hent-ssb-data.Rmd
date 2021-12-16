@@ -231,8 +231,8 @@ pop_08_17_raw <- ApiData(
 ```{r}
 pop_08_17 <- pop_08_17_raw %>%
   pivot_wider(
-    names_from = Kjonn,
-    values_from = value)
+    names_from = Alder,
+    values_from = Kjonn)
 ```
 
 -
@@ -258,8 +258,9 @@ pop_08_17 <- pop_08_17 %>%
 
 ```{r}
 pop_08_17 <- pop_08_17 %>% 
-  mutate(Menn_t = Menn_H17 + Menn_H18)
+  mutate(Menn_H17 = H17)
 ```
+
 
 # Øvre og Nedre Desil/Kvintil
 
