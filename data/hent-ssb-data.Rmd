@@ -89,14 +89,8 @@ load("test_string_tib.Rdata")
 -
 
 ```{r Moenster}
-#Legger inn regex mønster Virker denne? Start ved slutten av linjen, så (til
-#venstre) null eller flere white-space, så parentes slutt, så 2019 ??? hva hvis
-#kommunen ble avsluttet 2017? Trenger dere angi tallet eksakt, \\d* matcher jo
-#null eller flere tall Tilsvarende etter innledende parentes. Hvorfor ikke
-#heller bruke [\\d\\s-]*, Matcher null eller flere tall, space og bindestrek (f.eks "2002 - ")? Foreslår
-#også å endre \\s+ til \\s*, da vil dere også matche hvis byrået skulle ha glemt
-# en space mellom navnet og (. Er ikke regexp GØY?
-moenster <- '\\s+\\(\\d*[19-]\\d*[2019]\\)\\s*$'
+#Legger inn regex mønster
+moenster <- '\\s*\\([\\d\\s-]*\\d*\\)\\s*$'
 ```
 
 -
@@ -243,11 +237,11 @@ pop_08_17_raw <- ApiData(
 
 -
 
-```{r}
+```{r Datasett}
 pop_08_17 <- pop_08_17_raw %>%
   pivot_wider(
-    names_from = Alder,
-    values_from = Kjonn)
+    names_from = Kjonn,
+    values_from = value)
 ```
 
 -
@@ -256,26 +250,36 @@ pop_08_17 <- pop_08_17_raw %>%
 names(pop_08_17)[[1]] <- "knr"
 names(pop_08_17)[[2]] <- "Alder"
 names(pop_08_17)[[3]] <- "aar"
-names(pop_08_17)[[4]] <- "Menn_t"
-names(pop_08_17)[[5]] <- "Kvinner_t"
+names(pop_08_17)[[4]] <- "Menn"
+names(pop_08_17)[[5]] <- "Kvinner"
 ```
 
 -
 
-```{r}
+```{r Pivot_Wider_2}
 pop_08_17 <- pop_08_17 %>% 
-  mutate(Total_t = Menn_t + Kvinner_t)
+  pivot_wider(
+    names_from = Alder,
+    values_from = c(Menn, Kvinner))
 ```
 
 -
 
-**Stuck her**
-
-```{r}
+```{r mutating_variables}
 pop_08_17 <- pop_08_17 %>% 
-  mutate(Menn_H17 = H17)
+  mutate(Menn_t = Menn_H17 + Menn_H18) %>% 
+  mutate(Kvinner_t = Kvinner_H17 + Kvinner_H18) %>% 
+  mutate(Totalt_t = Menn_t + Kvinner_t)
 ```
 
+-
+
+```{r Velger_Variabler}
+pop_08_17 <- pop_08_17 %>%
+  select(knr, aar, Menn_t, Kvinner_t, Totalt_t)
+```
+
+-
 
 # Øvre og Nedre Desil/Kvintil
 
