@@ -22,6 +22,8 @@ library(lubridate)
 })
 ```
 
+-
+
 ```{r knr}
 # Vector med relevante kommunenummer
 load("knr.Rdata")
@@ -164,12 +166,14 @@ pm2_2008 %>%
   sum()
 ```
 
-# Denne roter med pm2 variabelen. **Trenger hjelp**
+Left_joiner
 
-```{r Removing_NA}
-pm2 <- pm2_2008 %>% 
-  na.omit(pm2)
+```{r}
+pm2 <- pm2 %>% 
+  left_join(pm2_2008) %>% 
+  na.omit()
 ```
+
 
 ### Konkluderer datainnsamling for gjennomsnittspris.
 
@@ -423,7 +427,7 @@ rm(kvintiler_08_17, kvintiler_08_17_raw, pop_08_17_ya_p)
 
 # Utdanning
 
-## Datauthenting, SSB. Både menn og Kvinner, Kort og Lang høyskoleutdanning. **Må finne ut korleis vi lager variabelen "uni_p"** -------- **Work In Progress**
+## Datauthenting, SSB. Både menn og Kvinner, Kort og Lang høyskoleutdanning. 
 
 ```{r}
 utdanning_08_17_raw <- ApiData(
@@ -587,7 +591,7 @@ pm2 %>%
 
 ```{r}
 pm2 %>%
-  select(uni_k_mf:Trade_pc) %>%
+  select(mf_uni_k:Trade_pc) %>%
   head(n=8)
 ```
 
