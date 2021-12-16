@@ -147,6 +147,12 @@ pm2_2008 %>%
   sum()
 ```
 
+```{r Removing_NA}
+pm2 <- pm2_2008 %>% 
+  na.omit(pm2)
+```
+
+
 ### Konkluderer datainnsamling for gjennomsnittspris.
 
 Vi trenger ikkje lengre pm2_raw så vi fjerner denne.
