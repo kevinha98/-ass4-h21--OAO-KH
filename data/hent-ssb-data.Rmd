@@ -235,18 +235,12 @@ pop_08_17 <- pop_08_17_raw %>%
     values_from = value)
 ```
 
-
-```{r}
-pop_08_17 <- pop_08_17 %>% 
-  mutate(Total_t = Menn_t + Kvinner_t)
-```
-
-
 -
 
 ```{r Names}
 names(pop_08_17)[[1]] <- "knr"
-names(pop_08_17)[[2]] <- "aar"
+names(pop_08_17)[[2]] <- "Alder"
+names(pop_08_17)[[3]] <- "aar"
 names(pop_08_17)[[4]] <- "Menn_t"
 names(pop_08_17)[[5]] <- "Kvinner_t"
 ```
@@ -256,6 +250,15 @@ names(pop_08_17)[[5]] <- "Kvinner_t"
 ```{r}
 pop_08_17 <- pop_08_17 %>% 
   mutate(Total_t = Menn_t + Kvinner_t)
+```
+
+-
+
+**Stuck her**
+
+```{r}
+pop_08_17 <- pop_08_17 %>% 
+  mutate(Menn_t = Menn_H17 + Menn_H18)
 ```
 
 # Øvre og Nedre Desil/Kvintil
