@@ -597,7 +597,5 @@ pm2 %>%
 
 # Skriver .csv fil
 
-```{r}
 write.table(pm2, file="pm2.csv", sep = ",")
-```
 
