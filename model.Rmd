@@ -36,5 +36,19 @@ pm2 <- read_csv("data/pm2.csv", show_col_types = FALSE)
 
 ## Modell
 
+mod1 <- 'pm2 ~ aar_f + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K'
+
+
+### Breuch-Pagen test for heteroskedastisitet
+
+```{r}
+
+# Kommentar fra Kevin: Hentet testen fra en oppgave i kap. 8.
+
+bptest(lm((voteA) ~ prtystrA + democA + log(expendA) + log(expendB)))
+```
+Vi ser at p-verdien er X.XXX, og ser dermed mye/lite grunnlag for heteroskedastisitet, (men ikke fullstendig på 5%-nivå).
+Nullhypotesen forkastes dersom p-verdien er lavere enn 5%. I dette tilfellet vurderes det dithen at nullhypotesen forkastes (ikke) ettersom p-verdien er X.XXX
+
 # Dummy
 
