@@ -570,13 +570,19 @@ names(pm2)
 
 ```{r}
 pm2 <- pm2 %>% 
-  select(knr, aar, knavn, Menn_ya_p, Kvinner_ya_p, Totalt_ya_p, inc_k1, inc_k5, mf_uni_k, m_uni_k, f_uni_k, mf_uni_l, m_uni_l, f_uni_l, value)
+  
+  # Kommentar fra Kevin: lagt til "pm2" midt inni her og ser at vi da får 16 variables under "Environment"
+  
+  select(knr, aar, knavn, pm2, Menn_ya_p, Kvinner_ya_p, Totalt_ya_p, inc_k1, inc_k5, mf_uni_k, m_uni_k, f_uni_k, mf_uni_l, m_uni_l, f_uni_l, value)
 ```
 
 Endrer navn på *value* då denne skal no heite **Trade_pc**.
 
 ```{r}
-names(pm2)[[15]] <- "Trade_pc"
+
+# Kommentar fra Kevin: Endret kolonnenummer fra 15 til 16 da "value" ble flyttet lenger til høyre med "pm2" inkludert
+
+names(pm2)[[16]] <- "Trade_pc"
 ```
 
 -
@@ -598,4 +604,3 @@ pm2 %>%
 # Skriver .csv fil
 
 write.table(pm2, file="pm2.csv", sep = ",")
-
