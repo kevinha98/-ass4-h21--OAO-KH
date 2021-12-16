@@ -39,7 +39,10 @@ pm2_raw <- ApiData(
   Region = knr,
   ContentsCode = "KvPris",
   Boligtype = "01",
-  Tid = c(as.character(2002:2017)))
+  Tid = c(
+    as.character(2002:2017)
+          )
+  )
 ```
 
 -
@@ -53,6 +56,7 @@ pm2 <- pm2_raw$dataset %>%
     aar = Tid,
     pm2 = value
   )
+
 head(pm2)
 ```
 
@@ -65,7 +69,8 @@ names(pm2_raw)[[1]] <- "desc"
 ```{r Mutate}
 pm2 <- pm2 %>% 
   mutate(knavn = pm2_raw$desc$region) %>% 
-  group_by(knr) %>% 
+# vent med gruppering
+#  group_by(knr) %>% 
   select(knr, aar, pm2, knavn)
 ```
 
@@ -84,7 +89,13 @@ load("test_string_tib.Rdata")
 -
 
 ```{r Moenster}
-#Legger inn regex mønster
+#Legger inn regex mønster Virker denne? Start ved slutten av linjen, så (til
+#venstre) null eller flere white-space, så parentes slutt, så 2019 ??? hva hvis
+#kommunen ble avsluttet 2017? Trenger dere angi tallet eksakt, \\d* matcher jo
+#null eller flere tall Tilsvarende etter innledende parentes. Hvorfor ikke
+#heller bruke [\\d\\s-]*, Matcher null eller flere tall, space og bindestrek (f.eks "2002 - ")? Foreslår
+#også å endre \\s+ til \\s*, da vil dere også matche hvis byrået skulle ha glemt
+# en space mellom navnet og (. Er ikke regexp GØY?
 moenster <- '\\s+\\(\\d*[19-]\\d*[2019]\\)\\s*$'
 ```
 
@@ -171,13 +182,17 @@ pop_08_17_ya_raw <- ApiData(
   select(-ContentsCode, -Alder)
 ```
 
--
 
 ```{r Pivot_Wider_Pop}
 pop_08_17_ya <- pop_08_17_ya_raw %>%
   pivot_wider(
+    # Med var navnene dere bruker
+    id_cols = c(Region, Tid),
     names_from = Kjonn,
+    # names prefix er ofte grei å bruke for å få variabelnavn R liker
+    names_prefix = "sex",
     values_from = value)
+# så kan dere regne ut totalt = sex1 + sex2 etc
 ```
 
 -
@@ -253,15 +268,21 @@ pop_08_17 <- pop_08_17 %>%
 kvintiler_08_17_raw <- ApiData(
   urlToData = "12558",
   Region = knr,
-  Desiler = c(1, 2, 9, 10),
-  ContentsCode = "VerdiDesil",
+  #Krever tekststrenger
+  #  Desiler = c(1, 2, 9, 10),
+  Desiler = c("01", "02", "09", "10"),
+  #  ContentsCode = "VerdiDesil",
+  ContentsCode = "AndelHush",
   InntektSkatt = "00",
-  Tid = c(as.character(2008:2017))
-)$dataset %>% 
+  Tid = c(
+    as.character(2008:2017)
+          )
+  )$dataset %>% 
   select(Region, Desiler, Tid, value)
 ```
 
 ```{r}
+#Nu går alt så meget bedre ;-)
 kvintiler_08_17 <- kvintiler_08_17_raw %>%
   pivot_wider(
     names_from = Desiler,
