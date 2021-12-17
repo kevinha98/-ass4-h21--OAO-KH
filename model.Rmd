@@ -31,7 +31,19 @@ knitr::opts_chunk$set(echo=FALSE, include = FALSE)
 ## Leser inn data
 
 ```{r reading file}
-pm2 <- read_csv("data/pm2.csv", show_col_types = FALSE)
+pm2 <- read_csv("data/pm2.csv", show_col_types = TRUE)
+```
+Vi er interessert i fylkesnummeret (de to første siffrene i kommunenummeret). Vi bruker mutate() for å gjøre om kolonner for kommunenummer om til typen "factor"
+```{r konvertering til faktor}
+pm2 %>%
+  mutate(knr = factor(knr))
+```
+```{r parse_factor}
+
+fnr <- pm2 %>%
+  parse_factor(knr,
+    substr(knr, 1:2)
+)
 ```
 
 ## Modell
