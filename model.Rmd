@@ -31,35 +31,56 @@ knitr::opts_chunk$set(echo=FALSE, include = FALSE)
 ## Leser inn data
 
 ```{r reading file}
-pm2 <- read_csv("data/pm2.csv", show_col_types = TRUE)
+pm2 <- read_csv("data/pm2.csv", show_col_types = FALSE)
 ```
 Vi er interessert i fylkesnummeret (de to første siffrene i kommunenummeret). Vi bruker mutate() for å gjøre om kolonner for kommunenummer om til typen "factor"
 ```{r konvertering til faktor}
-pm2 %>%
-  mutate(knr = factor(knr))
+pm2 <- pm2 %>% 
+  mutate(
+    fnr = (str_sub(knr, 1,2)),
+    aar_f = (str_sub(aar))
+  )
 ```
-```{r parse_factor}
 
-fnr <- pm2 %>%
-  parse_factor(knr,
-    substr(knr, 1:2)
-)
+```{r parserer faktorer}
+pm2 %>% 
+  mutate(
+    fnr = parse_factor(fnr, levels = fnr),
+    aar_f = parse_factor(aar_f, levels = aar_f)
+  )
+
+```
+```{r skalerer Trade_pc}
+pm2 <- pm2 %>%mutate(Trade_pc_100K = Trade_pc/100000) 
+```
+
+```{r visuell kontroll}
+head(pm2, n = 4)
 ```
 
 ## Modell
 
-mod1 <- 'pm2 ~ aar_f + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K'
+```{r starter med følgende oppgitte modell}
+mod1 <- 'pm2 ~ aar_f + Totalt_ya_p + inc_k1 + inc_k5 + mf_uni_k + mf_uni_l + Trade_pc_100K'
+```
+
+### i. generer et lm objekt (lm1) utfra mod1 og datasettet pm2.
+```{r}
+lm1 <- lm(mod1)
+```
+
+### ii. Legg residualene fra den lineære modellen til datasettet pm2.
+```{r legger til residualer}
+pm2 %>% add_residuals(lm1)
+```
 
 
 ### Breuch-Pagen test for heteroskedastisitet
 
 ```{r}
-
-# Kommentar fra Kevin: Hentet testen fra en oppgave i kap. 8.
-
-bptest(lm((voteA) ~ prtystrA + democA + log(expendA) + log(expendB)))
+bptest(lm1)
 ```
-Vi ser at p-verdien er X.XXX, og ser dermed mye/lite grunnlag for heteroskedastisitet, (men ikke fullstendig på 5%-nivå).
+Vi ser at p-verdien er X.XXX, og ser dermed grunnlag for heteroskedastisitet.
 Nullhypotesen forkastes dersom p-verdien er lavere enn 5%. I dette tilfellet vurderes det dithen at nullhypotesen forkastes (ikke) ettersom p-verdien er X.XXX
 
 # Dummy
