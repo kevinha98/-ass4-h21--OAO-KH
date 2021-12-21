@@ -31,7 +31,8 @@ knitr::opts_chunk$set(echo=FALSE, include = FALSE)
 ## Leser inn data
 
 ```{r reading file}
-pm2 <- read_csv("data/pm2.csv", show_col_types = FALSE, locale = locale(encoding = "ISO-8859-1"))
+# pm2 <- read_csv("data/pm2.csv", show_col_types = FALSE, locale = locale(encoding = "ISO-8859-1"))
+read_csv("data/pm2.csv")
 ```
 
 Vi fikk etter å ha anvendt read_csv-funksjonen en ekstra rad som ikke skal være der, og fjerner den.

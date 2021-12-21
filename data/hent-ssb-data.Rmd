@@ -604,5 +604,10 @@ pm2 %>%
 # Skriver .csv fil
 
 ```{r}
-write.csv(pm2, file="pm2.csv")
+write_csv(pm2, file="pm2.csv")
 ```
+
+```{r, echo =FALSE}
+# siste
+```
+
