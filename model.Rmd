@@ -181,7 +181,7 @@ pm2 %>%
 # Dummy
 
 ```{r Mod2}
-mod2 <- 'pm2 ~ aar_f*fnr + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K'
+mod2 <- 'pm2 ~ aar_f*fnr + Totalt_ya_p + inc_k1 + inc_k5 + mf_uni_k + mf_uni_l + Trade_pc_100K'
 ```
 
 -
@@ -214,5 +214,25 @@ scale_size_manual(values = c(seq(2.0, 0.5, by = -0.1))) +
 geom_hline(yintercept = 0) +
 theme(legend.position = 'bottom') +
   facet_wrap(~fylke)
+```
+
+### Diskusjon, Modell 2
+
+Da det er stor variasjon på alle grafene våres, så ser det ut til at modell 2 ikke traff så altfor bra.
+
+Med tanke på at vi hadde 16 variabler i datasettet før vi begynte å filtere og lage modeller, der modellene ikke inneholder halvparten av variablene våres en gang, i tillegg til at vi kan ha oversett noen andre variabler, så kan vi si med høy sannsynelighet at modellen mangler viktige forklarende variabler, ja.
+
+#### Filterer med Hensyn på Fylke 11
+
+Her bruker vi informasjonen gitt i oppgaven
+
+```{r Filter_Fylke_11}
+pm2 %>% filter(fnr %in% c("11")) %>%
+ggplot(mapping = aes(x = aar_d, y = res_m2)) +
+scale_color_viridis(discrete = TRUE, option = "D") +
+geom_line(aes(group = knavn, colour = knavn, size =knavn)) +
+scale_size_manual(values = c(seq(2.0, 0.5, by = -0.1))) +
+geom_hline(yintercept = 0) +
+theme(legend.position = 'bottom')
 ```
 
