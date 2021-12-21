@@ -124,7 +124,7 @@ Vi observerer at koeffisientene er signifikante på et 0.5%-nivå, og de fleste 
 bptest(lm1)
 ```
 
-Vi ser at p-verdien er langt under 0.5%, og ser dermed grunnlag for heteroskedastisitet. Nullhypotesen forkastes dersom p-verdien er lavere enn 5%. I dette tilfellet vurderes det dithen at nullhypotesen forkastes  ettersom p-verdien er langt under 0.5%
+Vi ser at p-verdien er langt under 0.5%, og ser dermed grunnlag for heteroskedastisitet. Nullhypotesen forkastes dersom p-verdien er lavere enn 5%. I dette tilfellet vurderes det dithen at nullhypotesen forkastes ettersom p-verdien er langt under 0.5%.
 
 ### Koeffisient-test og VcovHC
 
