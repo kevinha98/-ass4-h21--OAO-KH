@@ -603,4 +603,6 @@ pm2 %>%
 
 # Skriver .csv fil
 
-write.table(pm2, file="pm2.csv", sep = ",")
+```{r}
+write.csv(pm2, file="pm2.csv")
+```

@@ -34,6 +34,21 @@ knitr::opts_chunk$set(echo=FALSE, include = FALSE)
 pm2 <- read_csv("data/pm2.csv", show_col_types = FALSE)
 ```
 
+Vi fekk etter denne read_csv funksjonen ein ekstra rad som ikke skal vere der. Vi fjerner denne.
+
+```{r}
+names(pm2)[[1]] <- "Fjern"
+```
+
+-
+
+```{r}
+pm2 <- pm2 %>% 
+  select(-Fjern)
+```
+
+Vi har nå det vi trenger for å gå videre.
+
 Vi er interessert i fylkesnummeret (de to første siffrene i kommunenummeret). Vi bruker mutate() for å gjøre om kolonner for kommunenummer om til typen "factor"
 
 ```{r konvertering til faktor}
@@ -67,17 +82,19 @@ head(pm2, n = 4)
 
 ## Modell
 
-```{r starter med følgende oppgitte modell}
+```{r mod1}
 mod1 <- 'pm2 ~ aar_f + Totalt_ya_p + inc_k1 + inc_k5 + mf_uni_k + mf_uni_l + Trade_pc_100K'
 ```
 
 ### i. generer et lm objekt (lm1) utfra mod1 og datasettet pm2.
 
-```{r}
-lm1 <- lm(mod1)
+```{r lm1}
+lm1 <- lm(mod1, data = pm2)
 ```
 
-```{r Summary}
+-
+
+```{r Summary_lm1}
 summary(lm1)
 ```
 
@@ -89,14 +106,113 @@ pm2 %>%
   add_residuals(lm1)
 ```
 
+-
+
+```{r head_pm2}
+head(pm2, n=4)
+```
+
+### Forklaring av koeffisienter - ???
+
+???
+
 ### Breuch-Pagen test for heteroskedastisitet
 
-```{r}
+```{r bptest_lm1}
 bptest(lm1)
 ```
 
 Vi ser at p-verdien er X.XXX, og ser dermed grunnlag for heteroskedastisitet.
 Nullhypotesen forkastes dersom p-verdien er lavere enn 5%. I dette tilfellet vurderes det dithen at nullhypotesen forkastes (ikke) ettersom p-verdien er X.XXX
 
+### Koeffisient-test og VcovHC
+
+```{r Coeftest}
+coeftest(lm1)
+```
+
+-
+
+```{r VcovHC}
+vcovHC(lm1)
+```
+
+### Lager ny aar-variabel
+
+```{r Ny_aar}
+pm2 <- pm2 %>%
+  mutate(aar_d = make_date(aar))
+```
+
+### Residualer
+
+```{r Residualer_lm1}
+pm2 <- pm2 %>%
+  add_residuals(lm1)
+```
+
+### Fylker
+
+```{r Mutate_Substr}
+pm2 <- pm2 %>%
+  mutate(fylke = substr(knr, start = 1, stop = 2))
+```
+
+-
+
+```{r Filter}
+pm2 <- pm2 %>% 
+  filter(fylke %in% c("01", "02", "03", "11", "12"))
+```
+
+### GGplot Av Fylker
+
+```{r GGPlot}
+pm2 %>% 
+  unnest(c(fylke)) %>% 
+  group_by(fylke, aar_d) %>% 
+  summarise(mean_fylke = mean(resid)) %>% 
+  ggplot(mapping = aes(x= aar_d, y= mean_fylke, colour = fylke)) +
+  geom_line(lwd=1) +
+  geom_hline(yintercept = 0, colour = "white") +
+  theme(legend.position = "bottom")
+```
+
 # Dummy
+
+```{r Mod2}
+mod2 <- 'pm2 ~ aar_f*fnr + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K'
+```
+
+-
+
+```{r lm2}
+lm2 <- lm(mod2, data = pm2)
+```
+
+-
+
+```{r Summary_lm2}
+summary(lm2)
+```
+
+-
+
+```{r Residualer_lm2}
+pm2 <- pm2 %>% 
+  mutate(res_m2 = resid(lm2))
+```
+
+-
+
+```{r Plot}
+pm2 %>% 
+  filter(fnr %in% c("01", "02", "04", "11", "12")) %>%
+ggplot(mapping = aes(x = aar_d, y = res_m2)) +
+geom_line(aes(group = knavn)) +
+scale_size_manual(values = c(seq(2.0, 0.5, by = -0.1))) +
+geom_hline(yintercept = 0) +
+theme(legend.position = 'bottom') +
+  facet_wrap(~fylke)
+```
 
