@@ -181,7 +181,7 @@ pm2 %>%
   theme(legend.position = "bottom")
 ```
 
-# Dummy
+## Dummy
 
 Lager ein ny modell
 
@@ -332,12 +332,15 @@ mod_sum <- pm2_n %>%
 ```
 
 -
-
-**HER STÅR VI BOM FAST**
+## Coef_Df & Tibble variabler
+Lager ny variabel *coef_df* med *mod_sum*
 
 ```{r}
-coef_df <- mod_sum %>%
-  map_df() %>%
-  as.tibble()
+coef_df <- mod_sum$model %>% 
+  map_df(1) %>% 
+  tibble()
 ```
+
+
+
 
