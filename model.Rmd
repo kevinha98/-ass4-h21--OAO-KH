@@ -373,7 +373,7 @@ coef_df_long <- coef_df %>%
     values_to = "coef")
 ```
 
-Vi bruker så *coef_df_long* videre for å lage ein ggplot av fylke-faktorvariablenes koeffisienter.
+Vi bruker så *coef_df_long* videre for å lage en ggplot av fylke-faktorvariablenes koeffisienter.
 
 ```{r Plot}
 coef_df_long %>%
@@ -397,7 +397,7 @@ Resten av fnr variablene har vært synkende over tid. Dette betyr at verdien/pri
 
 #### 2014
 
-I 2014 så hadde vi ein "oljekrise" der prisen på olje hadde et kraftig fall, og flere ble permitterte og/eller mistet jobben. Områder som var avhengig av jobber relatert til oljenæringen, f.eks. Stavanger mistet da en del av dets attraktivitet.
+I 2014 så hadde vi en "oljekrise" der prisen på olje hadde et kraftig fall, og flere ble permitterte og/eller mistet jobben. Områder som var avhengig av jobber relatert til oljenæringen, f.eks. Stavanger mistet da en del av dets attraktivitet.
 
 ## Tilsvarende plot, nye variabler
 
@@ -415,4 +415,4 @@ theme(legend.position = 'bottom')
 
 ### Diskusjon
 
-Med untak av *Trade_pc_100K* og *inc_k1* variablene, ser det ut til at koeffisientene er ganske stabile over tid. Det er forsåvidt ikke stor ustabilitet for *inc_k1* heller, men den er litt mer ustabil enn de andre 4, og den har en konstant nedadgående trend. *Trade_pc_100K*-koeffisienten derimot er ikke stabil på sikt.
+Med unntak av *Trade_pc_100K* og *inc_k1* variablene, ser det ut til at koeffisientene er ganske stabile over tid. Det er forsåvidt ikke stor ustabilitet for *inc_k1* heller, men den er litt mer ustabil enn de andre 4, og den har en konstant nedadgående trend. *Trade_pc_100K*-koeffisienten derimot er ikke stabil på sikt.
