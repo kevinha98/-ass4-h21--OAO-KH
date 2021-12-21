@@ -163,8 +163,6 @@ pm2 <- pm2 %>%
 
 -
 
-
-
 ### GGplot Av Fylker
 
 ```{r GGPlot}
@@ -242,7 +240,7 @@ pm2 %>%
 
 ### Gjentar det samme plottet ovenfor, men med hensyn på utvalgte kommuner
 
-```{r}
+```{r Plot_Pm2_Kommune}
 pm2 %>%
   filter(knr %in% c("1119", "1120", "1127", "1121", "1130", "1135", "1106", "1149")) %>% 
   ggplot(mapping = aes(x = aar_d, y = res_m2)) +
@@ -261,7 +259,7 @@ Det denne grafen forteller oss er at hus/leiligheter som er nærme Stavanger omr
 
 Lager en aar_d variabel som date objekt
 
-```{r}
+```{r Pm2_Mutate_Aar}
 pm2 <- pm2 %>% 
   mutate(
     aar_d = date(paste0(aar, "-01-01"))
@@ -269,7 +267,7 @@ pm2 <- pm2 %>%
 ```
 
 
-```{r}
+```{r Lager_Pm2_n}
 pm2_n <- pm2 %>%
   select(pm2, fnr, knr, aar_d, aar, aar_f, Menn_ya_p, Kvinner_ya_p, Totalt_ya_p, inc_k1, inc_k5, mf_uni_k, mf_uni_l, Trade_pc_100K) %>%
   group_by(aar_d) %>%
@@ -277,12 +275,12 @@ pm2_n <- pm2 %>%
 ```
 
 
-```{r}
+```{r Pm2_n}
 pm2_n
 ```
 
 
-```{r}
+```{r Pm2_n_Data}
 pm2_n$data[[1]] %>%
 head(n = 5)
 ```
@@ -291,13 +289,13 @@ head(n = 5)
 
 Sjekker dimmensjonen vår
 
-```{r}
+```{r Dim_Pm2}
 dim(pm2_n)
 ```
 
 -
 
-```{r}
+```{r Kom_Model}
 kom_model <- function(a_df) {
   lm(pm2 ~ fnr + Totalt_ya_p + inc_k1 + inc_k5 + mf_uni_k + mf_uni_l + Trade_pc_100K, data = a_df)
 }
@@ -305,14 +303,14 @@ kom_model <- function(a_df) {
 
 -
 
-```{r}
+```{r Pm2_Mutate}
 pm2_n <- pm2_n %>% 
   mutate(model = map(data, .f = kom_model))
 ```
 
 -
 
-```{r}
+```{r Summary}
 # summary 2008
 pm2_n$model[[1]] %>%
   summary()
@@ -320,7 +318,7 @@ pm2_n$model[[1]] %>%
 
 
 
-```{r}
+```{r Pm2_n}
 pm2_n %>%
   filter(aar_d == "2008-01-01") %>% 
   .$model %>%
@@ -329,7 +327,7 @@ pm2_n %>%
 
 -
 
-```{r}
+```{r Mod_Sum_Unnest}
 mod_sum <- pm2_n %>% 
   mutate(mod_summary = map(.x = model, .f = glance)) %>% 
   unnest(mod_summary) %>% 
@@ -340,7 +338,7 @@ mod_sum <- pm2_n %>%
 ## Coef_Df & Tibble variabler
 Lager ny variabel *coef_df* med *mod_sum*
 
-```{r}
+```{r Lager_Coef_df}
 coef_df <- mod_sum$model %>% 
   map_df(1) %>% 
   tibble()
@@ -348,7 +346,7 @@ coef_df <- mod_sum$model %>%
 
 -
 
-```{r TEST}
+```{r Lager_Aar}
 coef_df <- coef_df %>%
   mutate(
     aar = ymd(paste(2008:2017, "-01-01", sep = ""))
@@ -358,7 +356,7 @@ coef_df <- coef_df %>%
 
 Bruker pivot_longer på *coef_df* for å lage *coef_df_long*
 
-```{r}
+```{r Lager_Coef_df_Long}
 coef_df_long <- coef_df %>%
   pivot_longer(
     cols = `(Intercept)`:`Trade_pc_100K`,
@@ -368,7 +366,7 @@ coef_df_long <- coef_df %>%
 
 Vi bruker så *coef_df_long* videre for å lage ein ggplot av fylke-faktorvariablenes koeffisienter.
 
-```{r}
+```{r Plot}
 coef_df_long %>%
   select(aar, variables, coef) %>%
   filter(
@@ -394,7 +392,7 @@ I 2014 så hadde vi ein "oljekrise" der prisen på olje hadde et kraftig fall, o
 
 ## Tilsvarende Plot, Nye Variabler
 
-```{r}
+```{r Plot}
 coef_df_long %>%
 select(aar, variables, coef) %>%
 filter(
