@@ -341,11 +341,21 @@ coef_df <- mod_sum$model %>%
   tibble()
 ```
 
+-
+
+```{r TEST}
+coef_df <- coef_df %>%
+  mutate(
+    aar = ymd(paste(2008:2017, "-01-01", sep = ""))
+  ) %>%
+  select(aar, everything())
+```
+
 Bruker pivot_longer på *coef_df* for å lage *coef_df_long*
 
 ```{r}
 ceof_df_long <- coef_df %>% 
-  pivot_longer()
+  pivot_longer(cols =  c("fnr02", "fnr03", "fnr11", "fnr12"), names_to = "Fylke")
 ```
 
 Vi bruker så *coef_df_long* videre for å lage ein ggplot av fylke-faktorvariablenes koeffisienter.
