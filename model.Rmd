@@ -164,14 +164,18 @@ pm2 <- pm2 %>%
 -
 
 ```{r Filter}
-pm2 <- pm2 %>% 
-  filter(fylke %in% c("01", "02", "03", "11", "12"))
+# Her fjerner dere alle utenom 5 fylker fra pm2. Ikke lurt!
+# Enten lag et nytt redusert datasett, f.eks pm2_red. Eller bare bruk
+# filteret når dere piper data til ggplot
+# pm2 <- pm2 %>% 
+#   filter(fylke %in% c("01", "02", "03", "11", "12"))
 ```
 
 ### GGplot Av Fylker
 
 ```{r GGPlot}
 pm2 %>% 
+  filter(fylke %in% c("01", "02", "03", "11", "12")) %>% 
   unnest(c(fylke)) %>% 
   group_by(fylke, aar_d) %>% 
   summarise(mean_fylke = mean(resid)) %>% 
@@ -246,7 +250,7 @@ pm2 %>%
 
 ```{r}
 pm2 %>%
-  filter(knr %in% c("1119", "1120", "1127", "1121", "1130", "1135", "1106", "1149")) %>%
+  filter(knr %in% c("1119", "1120", "1127", "1121", "1130", "1135", "1106", "1149")) %>% 
   ggplot(mapping = aes(x = aar_d, y = res_m2)) +
   scale_color_viridis(discrete = TRUE, option = "A") +
   geom_line(aes(group = knavn, colour = knavn, size = knavn)) +
@@ -261,20 +265,29 @@ Det denne grafen forteller oss er at hus/leiligheter som er nærme Stavanger omr
 
 ## Modell for kvart år
 
+Lager en aar_d variabel som date objekt
+
+```{r}
+pm2 <- pm2 %>% 
+  mutate(
+    aar_d = date(paste0(aar, "-01-01"))
+  )
+```
+
+
 ```{r}
 pm2_n <- pm2 %>%
-  group_by(aar) %>%
-  select(pm2, fnr, knr, aar, aar_f, Menn_ya_p, Kvinner_ya_p, Totalt_ya_p, inc_k1, inc_k5, mf_uni_k, mf_uni_l, Trade_pc_100K) %>%
+# First select variables, then group (on aar_d, gives nicer plots). Then nest()
+  select(pm2, fnr, knr, aar_d, aar, aar_f, Menn_ya_p, Kvinner_ya_p, Totalt_ya_p, inc_k1, inc_k5, mf_uni_k, mf_uni_l, Trade_pc_100K) %>%
+  group_by(aar_d) %>%
   nest()
 ```
 
--
 
 ```{r}
 pm2_n
 ```
 
--
 
 ```{r}
 pm2_n$data[[1]] %>%
@@ -292,8 +305,9 @@ dim(pm2_n)
 -
 
 ```{r}
+# må bruke a_df som data eller s ingen funksjon
 kom_model <- function(a_df) {
-  lm(pm2 ~ fnr + Totalt_ya_p + inc_k1 + inc_k5 + mf_uni_k + mf_uni_l + Trade_pc_100K, data = pm2)
+  lm(pm2 ~ fnr + Totalt_ya_p + inc_k1 + inc_k5 + mf_uni_k + mf_uni_l + Trade_pc_100K, data = a_df)
 }
 ```
 
@@ -301,31 +315,32 @@ kom_model <- function(a_df) {
 
 ```{r}
 pm2_n <- pm2_n %>% 
-  mutate(model = map(data, .f = kom_model)) 
+  mutate(model = map(data, .f = kom_model))
 ```
 
 -
 
 ```{r}
-kom_model(pm2_n$aar) %>% 
+# sumamry 2008
+pm2_n$model[[1]] %>%
   summary()
 ```
 
--
+
 
 ```{r}
 pm2_n %>%
-  filter(aar%in% c("2008")) %>%
+  filter(aar_d == "2008-01-01") %>% 
   .$model %>%
-  map_df(glance) %>%
-  print()
+  map_df(glance)
 ```
 
 -
 
 ```{r}
 mod_sum <- pm2_n %>% 
-  filter(aar %in% c("2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")) %>% 
+  # unødvendig
+  # filter(aar %in% c("2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")) %>% 
   mutate(mod_summary = map(.x = model, .f = glance)) %>% 
   unnest(mod_summary) %>% 
   print()
