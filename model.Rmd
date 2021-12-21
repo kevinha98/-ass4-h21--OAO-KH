@@ -128,48 +128,42 @@ Vi ser at p-verdien er langt under 0.5%, og ser dermed grunnlag for heteroskedas
 
 ### Koeffisient-test og VcovHC
 
-```{r Coeftest}
+```{r coeftest}
 coeftest(lm1)
 ```
 
 -
 
-```{r VcovHC}
+```{r vcovHC}
 vcovHC(lm1)
 ```
 
 ### Lager ny aar-variabel
 
-```{r Ny_aar}
+```{r ny_aar}
 pm2 <- pm2 %>%
   mutate(aar_d = make_date(aar))
 ```
 
 ### Residualer
 
-```{r Residualer_lm1}
+```{r residualer_lm1}
 pm2 <- pm2 %>%
   add_residuals(lm1)
 ```
 
 ### Fylker
 
-```{r Mutate_Substr}
+```{r mutate_substr}
 pm2 <- pm2 %>%
   mutate(fylke = substr(knr, start = 1, stop = 2))
 ```
 
 -
 
-<<<<<<< HEAD
-### GGplot Av Fylker
-
-```{r GGPlot}
-=======
 ### ggplot av fylker
 
 ```{r ggplot}
->>>>>>> e3ba8f5 (Simple linguistic editing)
 pm2 %>% 
   filter(fylke %in% c("01", "02", "03", "11", "12")) %>% 
   unnest(c(fylke)) %>% 
@@ -185,7 +179,7 @@ pm2 %>%
 
 Lager en ny modell
 
-```{r Mod2}
+```{r mod2}
 mod2 <- 'pm2 ~ aar_f*fnr + Totalt_ya_p + inc_k1 + inc_k5 + mf_uni_k + mf_uni_l + Trade_pc_100K'
 ```
 
@@ -197,20 +191,20 @@ lm2 <- lm(mod2, data = pm2)
 
 -
 
-```{r Summary_lm2}
+```{r summary_lm2}
 summary(lm2)
 ```
 
 -
 
-```{r Residualer_lm2}
+```{r residualer_lm2}
 pm2 <- pm2 %>% 
   mutate(res_m2 = resid(lm2))
 ```
 
 -
 
-```{r Plot}
+```{r plot}
 pm2 %>% 
   filter(fnr %in% c("01", "02", "04", "11", "12")) %>%
 ggplot(mapping = aes(x = aar_d, y = res_m2)) +
@@ -233,7 +227,7 @@ Vi vurderer kvaliteten dithen at den har store mangler i form av forklarende var
 
 Her bruker vi informasjonen gitt i oppgaven
 
-```{r Filter_Fylke_11}
+```{r filter_fylke_11}
 pm2 %>%
   filter(fnr %in% c("11")) %>%
   ggplot(mapping = aes(x = aar_d, y = res_m2)) +
@@ -265,7 +259,7 @@ Denne grafen forteller oss er at eiendommer i Stavanger-området er overvurdert 
 
 Lager en "aar_d"-variabel som date objekt
 
-```{r Pm2_Mutate_Aar}
+```{r pm2_mutate_aar}
 pm2 <- pm2 %>% 
   mutate(
     aar_d = date(paste0(aar, "-01-01"))
@@ -273,7 +267,7 @@ pm2 <- pm2 %>%
 ```
 
 
-```{r Lager_Pm2_n}
+```{r lager_pm2_n}
 pm2_n <- pm2 %>%
   select(pm2, fnr, knr, aar_d, aar, aar_f, Menn_ya_p, Kvinner_ya_p, Totalt_ya_p, inc_k1, inc_k5, mf_uni_k, mf_uni_l, Trade_pc_100K) %>%
   group_by(aar_d) %>%
@@ -281,27 +275,27 @@ pm2_n <- pm2 %>%
 ```
 
 
-```{r Pm2_n}
+```{r pm2_n}
 pm2_n
 ```
 
 
-```{r Pm2_n_Data}
+```{r pm2_n_data}
 pm2_n$data[[1]] %>%
 head(n = 5)
 ```
 
 -
 
-Sjekker dimmensjonene
+Sjekker dimensjonene
 
-```{r Dim_Pm2}
+```{r dim_pm2}
 dim(pm2_n)
 ```
 
 -
 
-```{r Kom_Model}
+```{r kom_model}
 kom_model <- function(a_df) {
   lm(pm2 ~ fnr + Totalt_ya_p + inc_k1 + inc_k5 + mf_uni_k + mf_uni_l + Trade_pc_100K, data = a_df)
 }
@@ -309,26 +303,21 @@ kom_model <- function(a_df) {
 
 -
 
-```{r Pm2_Mutate}
+```{r pm2_mutate}
 pm2_n <- pm2_n %>% 
   mutate(model = map(data, .f = kom_model))
 ```
 
 -
 
-```{r Summary}
+```{r summary}
 # summary 2008
 pm2_n$model[[1]] %>%
   summary()
 ```
 
 
-<<<<<<< HEAD
-
-```{r Pm2_n}
-=======
-```{r}
->>>>>>> e3ba8f5 (Simple linguistic editing)
+```{r pm2_n}
 pm2_n %>%
   filter(aar_d == "2008-01-01") %>% 
   .$model %>%
@@ -337,7 +326,7 @@ pm2_n %>%
 
 -
 
-```{r Mod_Sum_Unnest}
+```{r mod_sum_unnest}
 mod_sum <- pm2_n %>% 
   mutate(mod_summary = map(.x = model, .f = glance)) %>% 
   unnest(mod_summary) %>% 
@@ -348,7 +337,7 @@ mod_sum <- pm2_n %>%
 ## coef_df & tibble variabler
 Lager ny variabel *coef_df* med *mod_sum*
 
-```{r Lager_Coef_df}
+```{r lager_coef_df}
 coef_df <- mod_sum$model %>% 
   map_df(1) %>% 
   tibble()
@@ -356,7 +345,7 @@ coef_df <- mod_sum$model %>%
 
 -
 
-```{r Lager_Aar}
+```{r lager_aar}
 coef_df <- coef_df %>%
   mutate(
     aar = ymd(paste(2008:2017, "-01-01", sep = ""))
@@ -366,7 +355,7 @@ coef_df <- coef_df %>%
 
 Bruker pivot_longer på *coef_df* for å lage *coef_df_long*
 
-```{r Lager_Coef_df_Long}
+```{r lager_coef_df_long}
 coef_df_long <- coef_df %>%
   pivot_longer(
     cols = `(Intercept)`:`Trade_pc_100K`,
@@ -376,7 +365,7 @@ coef_df_long <- coef_df %>%
 
 Vi bruker så *coef_df_long* videre for å lage en ggplot av fylke-faktorvariablenes koeffisienter.
 
-```{r Plot}
+```{r plot}
 coef_df_long %>%
   select(aar, variables, coef) %>%
   filter(
@@ -402,7 +391,7 @@ I 2014 så hadde vi en "oljekrise" der prisen på olje hadde et kraftig fall, og
 
 ## Tilsvarende plot, nye variabler
 
-```{r Plot}
+```{r plot}
 coef_df_long %>%
 select(aar, variables, coef) %>%
 filter(
