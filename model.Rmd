@@ -354,7 +354,7 @@ coef_df <- coef_df %>%
 Bruker pivot_longer på *coef_df* for å lage *coef_df_long*
 
 ```{r}
-ceof_df_long <- coef_df %>% 
+coef_df_long <- coef_df %>% 
   pivot_longer(cols =  c("fnr02", "fnr03", "fnr11", "fnr12"), names_to = "Fylke")
 ```
 
