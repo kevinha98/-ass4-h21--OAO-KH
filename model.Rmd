@@ -250,8 +250,7 @@ pm2 %>%
   theme(legend.position = 'bottom')
 ```
 
+#### Kommentarer til grafen
 
-```{r}
-
-```
+Det denne grafen forteller oss er at hus/leiligheter som er nærme Stavanger området er overvurdert prismessig, mens hus/leiligheter som er nærme Haugesunds regionen er undervurdert
 
