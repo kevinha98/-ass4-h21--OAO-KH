@@ -33,7 +33,9 @@ knitr::opts_chunk$set(echo=FALSE, include = FALSE)
 ```{r reading file}
 pm2 <- read_csv("data/pm2.csv", show_col_types = FALSE)
 ```
+
 Vi er interessert i fylkesnummeret (de to første siffrene i kommunenummeret). Vi bruker mutate() for å gjøre om kolonner for kommunenummer om til typen "factor"
+
 ```{r konvertering til faktor}
 pm2 <- pm2 %>% 
   mutate(
@@ -41,6 +43,8 @@ pm2 <- pm2 %>%
     aar_f = (str_sub(aar))
   )
 ```
+
+-
 
 ```{r parserer faktorer}
 pm2 %>% 
@@ -50,9 +54,14 @@ pm2 %>%
   )
 
 ```
+
+-
+
 ```{r skalerer Trade_pc}
 pm2 <- pm2 %>%mutate(Trade_pc_100K = Trade_pc/100000) 
 ```
+
+-
 
 ```{r visuell kontroll}
 head(pm2, n = 4)
@@ -65,21 +74,23 @@ mod1 <- 'pm2 ~ aar_f + Totalt_ya_p + inc_k1 + inc_k5 + mf_uni_k + mf_uni_l + Tra
 ```
 
 ### i. generer et lm objekt (lm1) utfra mod1 og datasettet pm2.
+
 ```{r}
 lm1 <- lm(mod1)
 ```
 
 ### ii. Legg residualene fra den lineære modellen til datasettet pm2.
+
 ```{r legger til residualer}
 pm2 %>% add_residuals(lm1)
 ```
-
 
 ### Breuch-Pagen test for heteroskedastisitet
 
 ```{r}
 bptest(lm1)
 ```
+
 Vi ser at p-verdien er X.XXX, og ser dermed grunnlag for heteroskedastisitet.
 Nullhypotesen forkastes dersom p-verdien er lavere enn 5%. I dette tilfellet vurderes det dithen at nullhypotesen forkastes (ikke) ettersom p-verdien er X.XXX
 
