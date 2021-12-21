@@ -227,12 +227,31 @@ Med tanke på at vi hadde 16 variabler i datasettet før vi begynte å filtere o
 Her bruker vi informasjonen gitt i oppgaven
 
 ```{r Filter_Fylke_11}
-pm2 %>% filter(fnr %in% c("11")) %>%
-ggplot(mapping = aes(x = aar_d, y = res_m2)) +
-scale_color_viridis(discrete = TRUE, option = "D") +
-geom_line(aes(group = knavn, colour = knavn, size =knavn)) +
-scale_size_manual(values = c(seq(2.0, 0.5, by = -0.1))) +
-geom_hline(yintercept = 0) +
-theme(legend.position = 'bottom')
+pm2 %>%
+  filter(fnr %in% c("11")) %>%
+  ggplot(mapping = aes(x = aar_d, y = res_m2)) +
+  scale_color_viridis(discrete = TRUE, option = "D") +
+  geom_line(aes(group = knavn, colour = knavn, size = knavn)) +
+  scale_size_manual(values = c(seq(2.0, 0.5, by = -0.1))) +
+  geom_hline(yintercept = 0) +
+  theme(legend.position = 'bottom')
+```
+
+### Gjentar det samme plottet ovenfor, men med hensyn på utvalgte kommuner
+
+```{r}
+pm2 %>%
+  filter(knr %in% c("1119", "1120", "1127", "1121", "1130", "1135", "1106", "1149")) %>%
+  ggplot(mapping = aes(x = aar_d, y = res_m2)) +
+  scale_color_viridis(discrete = TRUE, option = "A") +
+  geom_line(aes(group = knavn, colour = knavn, size = knavn)) +
+  scale_size_manual(values = c(seq(2.0, 0.5, by = -0.1))) +
+  geom_hline(yintercept = 0) +
+  theme(legend.position = 'bottom')
+```
+
+
+```{r}
+
 ```
 
