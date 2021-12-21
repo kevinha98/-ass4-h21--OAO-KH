@@ -341,6 +341,10 @@ coef_df <- mod_sum$model %>%
   tibble()
 ```
 
+Bruker pivot_longer på *coef_df* for å lage *coef_df_long*
 
-
+```{r}
+ceof_df_long <- coef_df %>% 
+  pivot_longer()
+```
 
