@@ -390,11 +390,22 @@ coef_df_long %>%
   theme(legend.position = 'bottom')
 ```
 
-..
 ### Kommentarer til modellen
 
-Vi ser ut ifra plottet at fnr03 har vært sterkt stigende over tid. Dette betyr at...
+Vi ser ut ifra plottet at fnr03 har vært sterkt stigende over tid. Dette betyr at prisane i dette fylket(?) har auka kontinuerlig over fleire år.
 
-Vi ser videre at fnr02 har vært så og sei stabil over flere år. Dette betyr at...
+Vi ser videre at fnr02 har vært så og sei stabil over flere år. Dette betyr at dette fylket(?) har hatt ein ganske stabil utvikling
 
-Resten av fnr variablene har vært synkende over tid. Dette betyr at...
+Resten av fnr variablene har vært synkende over tid. Dette betyr at verdien/prisane i disse fylkene(?) har hatt ein negativ utvikling over tid.
+
+#### 2014
+
+I 2014 så hadde vi ein "oljekrise" der prisen på olje hadde et kraftig fall, og flere ble perimeterte og/eller mistet jobben. Områder som låg var avhengig av jobber relatert til oljenæringa, f.eks. Stavanger mistet da en del av dets attraktivitet.
+
+## Tilsvarende Plot, Nye Variabler
+
+
+
+### Diskusjon
+
+-
