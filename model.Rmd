@@ -418,4 +418,4 @@ theme(legend.position = 'bottom')
 
 ### Diskusjon
 
-
+Md untak av *Trade_pc_100K* og *inc_k1* variablane, så ser det ut til at koeffisientane er ganske stabile over tid. Det er forsåvidt ikkje stor ustabilitet for *inc_k1* heller, men den er litt meir ustabil enn dei andre 4, og den har ein konstant nedgåande trend. *Trade_pc_100K* koeffisienten derimot er ikkje stabil på sikt.
