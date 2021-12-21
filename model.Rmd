@@ -163,13 +163,7 @@ pm2 <- pm2 %>%
 
 -
 
-```{r Filter}
-# Her fjerner dere alle utenom 5 fylker fra pm2. Ikke lurt!
-# Enten lag et nytt redusert datasett, f.eks pm2_red. Eller bare bruk
-# filteret når dere piper data til ggplot
-# pm2 <- pm2 %>% 
-#   filter(fylke %in% c("01", "02", "03", "11", "12"))
-```
+
 
 ### GGplot Av Fylker
 
@@ -277,7 +271,6 @@ pm2 <- pm2 %>%
 
 ```{r}
 pm2_n <- pm2 %>%
-# First select variables, then group (on aar_d, gives nicer plots). Then nest()
   select(pm2, fnr, knr, aar_d, aar, aar_f, Menn_ya_p, Kvinner_ya_p, Totalt_ya_p, inc_k1, inc_k5, mf_uni_k, mf_uni_l, Trade_pc_100K) %>%
   group_by(aar_d) %>%
   nest()
@@ -305,7 +298,6 @@ dim(pm2_n)
 -
 
 ```{r}
-# må bruke a_df som data eller s ingen funksjon
 kom_model <- function(a_df) {
   lm(pm2 ~ fnr + Totalt_ya_p + inc_k1 + inc_k5 + mf_uni_k + mf_uni_l + Trade_pc_100K, data = a_df)
 }
@@ -321,7 +313,7 @@ pm2_n <- pm2_n %>%
 -
 
 ```{r}
-# sumamry 2008
+# summary 2008
 pm2_n$model[[1]] %>%
   summary()
 ```
@@ -339,8 +331,6 @@ pm2_n %>%
 
 ```{r}
 mod_sum <- pm2_n %>% 
-  # unødvendig
-  # filter(aar %in% c("2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")) %>% 
   mutate(mod_summary = map(.x = model, .f = glance)) %>% 
   unnest(mod_summary) %>% 
   print()
