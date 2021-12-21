@@ -76,6 +76,8 @@ pm2 <- pm2 %>%
 
 -
 
+Sjekker korleis modellen ser ut
+
 ```{r visuell kontroll}
 head(pm2, n = 4)
 ```
@@ -86,7 +88,7 @@ head(pm2, n = 4)
 mod1 <- 'pm2 ~ aar_f + Totalt_ya_p + inc_k1 + inc_k5 + mf_uni_k + mf_uni_l + Trade_pc_100K'
 ```
 
-### i. generer et lm objekt (lm1) utfra mod1 og datasettet pm2.
+### Generer et lm objekt (lm1) utfra mod1 og datasettet pm2.
 
 ```{r lm1}
 lm1 <- lm(mod1, data = pm2)
@@ -99,7 +101,7 @@ summary(lm1)
 ```
 
 
-### ii. Legg residualene fra den lineære modellen til datasettet pm2.
+### Legger residualene fra den lineære modellen til datasettet pm2.
 
 ```{r legger til residualer}
 pm2 %>%
@@ -112,9 +114,9 @@ pm2 %>%
 head(pm2, n=4)
 ```
 
-### Forklaring av koeffisienter - ???
+### Forklaring av koeffisienter
 
-???
+Einase eg kan sjå ved koeffisientane er at nesten alle er signifikante på 0.5% nivå og dei fleste har solide t-verdiar. I tillegg til dette så er $R^2$ på 0.8346, som vil sei at modellen vår med desse variablane forteller ca 83.46%.
 
 ### Breuch-Pagen test for heteroskedastisitet
 
@@ -122,8 +124,9 @@ head(pm2, n=4)
 bptest(lm1)
 ```
 
-Vi ser at p-verdien er X.XXX, og ser dermed grunnlag for heteroskedastisitet.
-Nullhypotesen forkastes dersom p-verdien er lavere enn 5%. I dette tilfellet vurderes det dithen at nullhypotesen forkastes (ikke) ettersom p-verdien er X.XXX
+Vi ser at p-verdien er lang under 0.5%, og ser dermed grunnlag for heteroskedastisitet.
+
+Nullhypotesen forkastes dersom p-verdien er lavere enn 5%. I dette tilfellet vurderes det dette at nullhypotesen forkastes (ikke) ettersom p-verdien er langt under 0.5%
 
 ### Koeffisient-test og VcovHC
 
@@ -180,6 +183,8 @@ pm2 %>%
 
 # Dummy
 
+Lager ein ny modell
+
 ```{r Mod2}
 mod2 <- 'pm2 ~ aar_f*fnr + Totalt_ya_p + inc_k1 + inc_k5 + mf_uni_k + mf_uni_l + Trade_pc_100K'
 ```
@@ -222,7 +227,7 @@ Da det er stor variasjon på alle grafene våres, så ser det ut til at modell 2
 
 Med tanke på at vi hadde 16 variabler i datasettet før vi begynte å filtere og lage modeller, der modellene ikke inneholder halvparten av variablene våres en gang, i tillegg til at vi kan ha oversett noen andre variabler, så kan vi si med høy sannsynelighet at modellen mangler viktige forklarende variabler, ja.
 
-#### Filterer med Hensyn på Fylke 11
+### Filterer med Hensyn på Fylke 11
 
 Her bruker vi informasjonen gitt i oppgaven
 
@@ -278,6 +283,8 @@ head(n = 5)
 
 -
 
+Sjekker dimmensjonen vår
+
 ```{r}
 dim(pm2_n)
 ```
@@ -325,6 +332,8 @@ mod_sum <- pm2_n %>%
 ```
 
 -
+
+**HER STÅR VI BOM FAST**
 
 ```{r}
 coef_df <- mod_sum %>%
