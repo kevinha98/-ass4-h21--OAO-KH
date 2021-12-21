@@ -390,6 +390,7 @@ coef_df_long %>%
   theme(legend.position = 'bottom')
 ```
 
+..
 ### Kommentarer til modellen
 
 Vi ser ut ifra plottet at fnr03 har vært sterkt stigende over tid. Dette betyr at...
