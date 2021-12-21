@@ -34,7 +34,7 @@ knitr::opts_chunk$set(echo=FALSE, include = FALSE)
 pm2 <- read_csv("data/pm2.csv", show_col_types = FALSE, locale = locale(encoding = "ISO-8859-1"))
 ```
 
-Vi fekk etter denne read_csv funksjonen ein ekstra rad som ikke skal vere der. Vi fjerner denne.
+Vi fikk etter å ha anvendt read_csv-funksjonen en ekstra rad som ikke skal være der, og fjerner den.
 
 ```{r}
 names(pm2)[[1]] <- "Fjern"
@@ -76,7 +76,7 @@ pm2 <- pm2 %>%
 
 -
 
-Sjekker korleis modellen ser ut
+Sjekker hvordan modellen ser ut visuelt i scriptet:
 
 ```{r visuell kontroll}
 head(pm2, n = 4)
@@ -96,10 +96,9 @@ lm1 <- lm(mod1, data = pm2)
 
 -
 
-```{r Summary_lm1}
+```{r summary_lm1}
 summary(lm1)
 ```
-
 
 ### Legger residualene fra den lineære modellen til datasettet pm2.
 
@@ -114,9 +113,9 @@ pm2 %>%
 head(pm2, n=4)
 ```
 
-### Forklaring av koeffisienter
+### Forklaring av års-koeffisienter
 
-Einase eg kan sjå ved koeffisientane er at nesten alle er signifikante på 0.5% nivå og dei fleste har solide t-verdiar. I tillegg til dette så er $R^2$ på 0.8346, som vil sei at modellen vår med desse variablane forteller ca 83.46%.
+Vi observerer at koeffisientene er signifikante på et 0.5%-nivå, og de fleste har solide t-verider. I tillegg er $R^2$ på 0.8346, som innebærer at at modellen vår har en forklaringskraft på 83.46% med våre anvendte variabler.
 
 ### Breuch-Pagen test for heteroskedastisitet
 
@@ -124,9 +123,7 @@ Einase eg kan sjå ved koeffisientane er at nesten alle er signifikante på 0.5%
 bptest(lm1)
 ```
 
-Vi ser at p-verdien er lang under 0.5%, og ser dermed grunnlag for heteroskedastisitet.
-
-Nullhypotesen forkastes dersom p-verdien er lavere enn 5%. I dette tilfellet vurderes det dette at nullhypotesen forkastes (ikke) ettersom p-verdien er langt under 0.5%
+Vi ser at p-verdien er langt under 0.5%, og ser dermed grunnlag for heteroskedastisitet. Nullhypotesen forkastes dersom p-verdien er lavere enn 5%. I dette tilfellet vurderes det dithen at nullhypotesen forkastes  ettersom p-verdien er langt under 0.5%
 
 ### Koeffisient-test og VcovHC
 
@@ -163,9 +160,15 @@ pm2 <- pm2 %>%
 
 -
 
+<<<<<<< HEAD
 ### GGplot Av Fylker
 
 ```{r GGPlot}
+=======
+### ggplot av fylker
+
+```{r ggplot}
+>>>>>>> e3ba8f5 (Simple linguistic editing)
 pm2 %>% 
   filter(fylke %in% c("01", "02", "03", "11", "12")) %>% 
   unnest(c(fylke)) %>% 
@@ -179,7 +182,7 @@ pm2 %>%
 
 ## Dummy
 
-Lager ein ny modell
+Lager en ny modell
 
 ```{r Mod2}
 mod2 <- 'pm2 ~ aar_f*fnr + Totalt_ya_p + inc_k1 + inc_k5 + mf_uni_k + mf_uni_l + Trade_pc_100K'
@@ -217,13 +220,15 @@ theme(legend.position = 'bottom') +
   facet_wrap(~fylke)
 ```
 
-### Diskusjon, Modell 2
+### Diskusjon av kvaliteten på modell 2
 
-Da det er stor variasjon på alle grafene våres, så ser det ut til at modell 2 ikke traff så altfor bra.
+Det eksisterer stor variasjon på alle grafene våre, noe som kan indikerer at modell 2 ikke treffer så altfor bra.
 
-Med tanke på at vi hadde 16 variabler i datasettet før vi begynte å filtere og lage modeller, der modellene ikke inneholder halvparten av variablene våres en gang, i tillegg til at vi kan ha oversett noen andre variabler, så kan vi si med høy sannsynelighet at modellen mangler viktige forklarende variabler, ja.
+Vi tar i betraktning at vi hadde 16 variabler i datasettet før vi begynte å filtrere og utarbeide modeller. Modellene inneholder ikke engang halvparten av variablene. I tillegg kan vi ha oversett andre variabler.
 
-### Filterer med Hensyn på Fylke 11
+Vi vurderer kvaliteten dithen at den har store mangler i form av forklarende variabler.
+
+### Filterer med hensyn på fylke "11"
 
 Her bruker vi informasjonen gitt i oppgaven
 
@@ -253,11 +258,11 @@ pm2 %>%
 
 #### Kommentarer til grafen
 
-Det denne grafen forteller oss er at hus/leiligheter som er nærme Stavanger området er overvurdert prismessig, mens hus/leiligheter som er nærme Haugesunds regionen er undervurdert
+Denne grafen forteller oss er at eiendommer i Stavanger-området er overvurdert prismessig, samtidig som eiendommer i og rundt Haugesundsregionen er undervurdert
 
-## Modell for kvart år
+## Modell for hvert år
 
-Lager en aar_d variabel som date objekt
+Lager en "aar_d"-variabel som date objekt
 
 ```{r Pm2_Mutate_Aar}
 pm2 <- pm2 %>% 
@@ -287,7 +292,7 @@ head(n = 5)
 
 -
 
-Sjekker dimmensjonen vår
+Sjekker dimmensjonene
 
 ```{r Dim_Pm2}
 dim(pm2_n)
@@ -317,8 +322,12 @@ pm2_n$model[[1]] %>%
 ```
 
 
+<<<<<<< HEAD
 
 ```{r Pm2_n}
+=======
+```{r}
+>>>>>>> e3ba8f5 (Simple linguistic editing)
 pm2_n %>%
   filter(aar_d == "2008-01-01") %>% 
   .$model %>%
@@ -335,7 +344,7 @@ mod_sum <- pm2_n %>%
 ```
 
 -
-## Coef_Df & Tibble variabler
+## coef_df & tibble variabler
 Lager ny variabel *coef_df* med *mod_sum*
 
 ```{r Lager_Coef_df}
@@ -380,17 +389,17 @@ coef_df_long %>%
 
 ### Kommentarer til modellen
 
-Vi ser ut ifra plottet at fnr03 har vært sterkt stigende over tid. Dette betyr at prisane i dette fylket(?) har auka kontinuerlig over fleire år.
+Vi ser ut ifra plottet at fnr03 har vært sterkt stigende over tid. Dette betyr at prisene i dette fylket har økt kontinuerlig over flere år.
 
-Vi ser videre at fnr02 har vært så og sei stabil over flere år. Dette betyr at dette fylket(?) har hatt ein ganske stabil utvikling
+Vi ser videre at fnr02 har vært så og si stabil over flere år. Dette betyr at dette fylket har hatt en ganske stabil utvikling
 
-Resten av fnr variablene har vært synkende over tid. Dette betyr at verdien/prisane i disse fylkene(?) har hatt ein negativ utvikling over tid.
+Resten av fnr variablene har vært synkende over tid. Dette betyr at verdien/prisene i disse fylkene har hatt en negativ utvikling over tid.
 
 #### 2014
 
-I 2014 så hadde vi ein "oljekrise" der prisen på olje hadde et kraftig fall, og flere ble perimeterte og/eller mistet jobben. Områder som låg var avhengig av jobber relatert til oljenæringa, f.eks. Stavanger mistet da en del av dets attraktivitet.
+I 2014 så hadde vi ein "oljekrise" der prisen på olje hadde et kraftig fall, og flere ble permitterte og/eller mistet jobben. Områder som var avhengig av jobber relatert til oljenæringen, f.eks. Stavanger mistet da en del av dets attraktivitet.
 
-## Tilsvarende Plot, Nye Variabler
+## Tilsvarende plot, nye variabler
 
 ```{r Plot}
 coef_df_long %>%
@@ -406,4 +415,4 @@ theme(legend.position = 'bottom')
 
 ### Diskusjon
 
-Md untak av *Trade_pc_100K* og *inc_k1* variablane, så ser det ut til at koeffisientane er ganske stabile over tid. Det er forsåvidt ikkje stor ustabilitet for *inc_k1* heller, men den er litt meir ustabil enn dei andre 4, og den har ein konstant nedgåande trend. *Trade_pc_100K* koeffisienten derimot er ikkje stabil på sikt.
+Med untak av *Trade_pc_100K* og *inc_k1* variablene, ser det ut til at koeffisientene er ganske stabile over tid. Det er forsåvidt ikke stor ustabilitet for *inc_k1* heller, men den er litt mer ustabil enn de andre 4, og den har en konstant nedadgående trend. *Trade_pc_100K*-koeffisienten derimot er ikke stabil på sikt.
