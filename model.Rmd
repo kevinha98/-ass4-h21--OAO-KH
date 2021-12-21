@@ -404,8 +404,18 @@ I 2014 så hadde vi ein "oljekrise" der prisen på olje hadde et kraftig fall, o
 
 ## Tilsvarende Plot, Nye Variabler
 
-
+```{r}
+coef_df_long %>%
+select(aar, variables, coef) %>%
+filter(
+variables %in% c("Totalt_ya_p", "inc_k1", "inc_k5", "mf_uni_k", "mf_uni_l", "Trade_pc_100K")
+) %>%
+ggplot(mapping = aes(x = aar, y = coef, colour = variables)) +
+scale_color_viridis(discrete = TRUE, option = "D") +
+geom_line(aes(group = variables), lwd = 1) +
+theme(legend.position = 'bottom')
+```
 
 ### Diskusjon
 
--
+
