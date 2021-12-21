@@ -354,8 +354,11 @@ coef_df <- coef_df %>%
 Bruker pivot_longer på *coef_df* for å lage *coef_df_long*
 
 ```{r}
-coef_df_long <- coef_df %>% 
-  pivot_longer(cols =  c("fnr02", "fnr03", "fnr11", "fnr12"), names_to = "Fylke")
+coef_df_long <- coef_df %>%
+  pivot_longer(
+    cols = `(Intercept)`:`Trade_pc_100K`,
+    names_to = "variables",
+    values_to = "coef")
 ```
 
 Vi bruker så *coef_df_long* videre for å lage ein ggplot av fylke-faktorvariablenes koeffisienter.
