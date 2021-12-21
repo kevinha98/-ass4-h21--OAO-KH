@@ -246,7 +246,7 @@ pm2 %>%
 
 ### Gjentar det samme plottet ovenfor, men med hensyn på utvalgte kommuner
 
-```{r Plot_Pm2_Kommune}
+```{r plot_pm2_kommune}
 pm2 %>%
   filter(knr %in% c("1119", "1120", "1127", "1121", "1130", "1135", "1106", "1149")) %>% 
   ggplot(mapping = aes(x = aar_d, y = res_m2)) +
