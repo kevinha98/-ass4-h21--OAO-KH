@@ -369,9 +369,11 @@ coef_df_long %>%
 
 ### Kommentarer til modellen
 
-Vi ser ut ifra plottet at fnr03 har vært sterkt stigende over tid. Dette betyr at prisene i dette fylket har økt kontinuerlig over flere år.
+Vi ser ut ifra plottet at fnr03 har vært sterkt stigende over tid. Dette betyr at prisene i dette fylket har økt kontinuerlig over flere år. Dette fylket innehar Oslo kommune, noe som stemmer overrens med hvor markedet har opplevd en betraktelig prisvektst i eiendomsbransjen i flere år.
 
-Vi ser videre at fnr02 har vært så og si stabil over flere år. Dette betyr at dette fylket har hatt en ganske stabil utvikling
+Den gule linjen, fnr14 inneholder kommunene Flora, Sogndal, Årdal, og Førde. Isolert sett viser grafen en negativ trend isolert sett. Her er det ikke tatt i betraktning at disse områdene er små kommuner i norsk målestokk, og følgelig kan være mer eksponert for usikkerhetsmomenter i utarbeiding av slike modeller og figuerer.
+
+Vi ser videre at fnr02 (Akershus fylke) har vært så og si stabil over flere år. Dette betyr at dette fylket har hatt en ganske stabil utvikling. Tidligere Akershus fylke, nr 02, består av kommunene Vestby, Ski, Ås, Frogn, Nesodden, Oppegård, Bærum, Asker, Aurskog-Høland, Sørum, Fet, Rælingen, Enebakk, Lørenskog, Skedsmo, Nittedal, Gjerdrum, Ullensaker, Nes (Akershus), Eidsvoll, Nannestad og Hurdal. Her ser man starten på en økning i 2016, som kan tenkes å skyldes at mange velger å kjøpe utenfor Oslo på grunn av den ekstreme veksten og de pressede prisene som foreligger.
 
 Resten av fnr variablene har vært synkende over tid. Dette betyr at verdien/prisene i disse fylkene har hatt en negativ utvikling over tid.
 
