@@ -203,7 +203,7 @@ theme(legend.position = 'bottom') +
 
 ### Diskusjon av kvaliteten på modell 2
 
-Det eksisterer stor variasjon på alle grafene våre, noe som kan indikere at modell 2 ikke treffer så altfor bra. Vi ser residualene på y-aksen på grafene, noe som er et uttryk for en forskjell mellom observert verdi og den verdien modellen predikerer. Målet er å ha residualer som summerer seg til null fordi man skal ha tilsvarende observerte verdien både over og under regresjonslinjen. 
+Det eksisterer stor variasjon på alle grafene våre, noe som kan indikere at modell 2 ikke treffer så altfor bra. Vi ser residualene på y-aksen på grafene, noe som er et uttryk for en forskjell mellom observert og predikert verdi. Målet er å ha residualer som summerer seg til null fordi man skal ha tilsvarende resdiuler både over og under regresjonslinjen. 
 
 Vi tar i betraktning at vi hadde 16 variabler i datasettet før vi begynte å filtrere og utarbeide modeller. Modellene inneholder ikke engang halvparten av variablene. I tillegg kan vi ha oversett andre variabler. 
 
@@ -239,9 +239,12 @@ pm2 %>%
 
 #### Kommentarer til grafen
 
-Denne grafen forteller oss er at eiendommer i Stavanger-området er overvurdert prismessig, samtidig som eiendommer i og rundt Haugesundsregionen er undervurdert. 
+Haugesund, Karmøy og Sauda hører til Haugalandsregionen/ligger nord for Boknafjorden og Stavanger. I disse områdene er residualene negative, som indikerer at estimert verdi er høyere enn observert verdi.
+Randaberg, Strand, Klepp, Hå, Time ligger sør for Boknafjorden og felles for disse er at residualene har positive verdier, som indikerer at prisene er undervurderte.
 
-Midlertidig kommentar fra Kevin: Vi ser tre grafef som liker betydelig under $y = 0$. Dette demonsterer negative feilledd som er et resultat av at predikert linje sikter for høyt i forhold til våre faktiske observasjoner. Vi overvurderer med andre ord prisen. Helt konkret ser vi Sauda helt nord i regionen innehar de mest betydelige negative residualene. Deretter følger Haugesund og Karmøy. Felles for de tre nevnte er at vår predikerte modell, vurderer prisen til å være høyere enn den faktisk er.
+Denne grafen forteller oss er at eiendommer i Stavanger-området er overvurdert prismessig, samtidig som eiendommer i og rundt Haugesundsregionen er undervurdert.
+
+Midlertidig kommentar fra Kevin: Vi ser tre grafer som ligger betydelig under nullinjen. Dette demonsterer negative feilledd som er et resultat av at predikert linje sikter for høyt i forhold til våre faktiske observasjoner. Vi overvurderer med andre ord prisen. Helt konkret ser vi Sauda helt nord i regionen innehar de mest betydelige negative residualene. Deretter følger Haugesund og Karmøy. Felles for de tre nevnte er at vår predikerte modell, vurderer prisen til å være høyere enn den faktisk er.
 
 ## Modell for hvert år
 
