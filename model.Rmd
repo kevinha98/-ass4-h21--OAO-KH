@@ -239,12 +239,11 @@ pm2 %>%
 
 #### Kommentarer til grafen
 
-Haugesund, Karmøy og Sauda hører til Haugalandsregionen/ligger nord for Boknafjorden og Stavanger. I disse områdene er residualene negative, som indikerer at estimert verdi er høyere enn observert verdi.
-Randaberg, Strand, Klepp, Hå, Time ligger sør for Boknafjorden og felles for disse er at residualene har positive verdier, som indikerer at prisene er undervurderte.
+Vi ser tre grafer som ligger betydelig under nullinjen. Haugesund, Karmøy og Sauda hører til Haugalandsregionen, eller ligger nord for Boknafjorden og Stavanger. I disse områdene er residualene negative, som indikerer at estimert verdi er høyere enn observert verdi. Dette demonsterer negative feilledd, som er et resultat av at predikert regresjonslinje sikter for høyt i forhold til våre faktiske observerte verdier. Vi overvurderer med andre ord prisen. Helt konkret ser vi Sauda helt nord i regionen innehar de mest betydelige negative residualene. Deretter følger Haugesund og Karmøy.
 
-Denne grafen forteller oss er at eiendommer i Stavanger-området er overvurdert prismessig, samtidig som eiendommer i og rundt Haugesundsregionen er undervurdert.
+På oppsiden av nullinjen hvor grafen omfatter positive residualverdier finner vi Randaberg, Strand, Klepp, Hå, Time som ligger sør for Boknafjorden. I disse områdene kan vi trekke konklusjonen om at de estimerte verdiene er for lave, sammenlignet med observert verdi og følgelig resulterer i positive residualer.
 
-Midlertidig kommentar fra Kevin: Vi ser tre grafer som ligger betydelig under nullinjen. Dette demonsterer negative feilledd som er et resultat av at predikert linje sikter for høyt i forhold til våre faktiske observasjoner. Vi overvurderer med andre ord prisen. Helt konkret ser vi Sauda helt nord i regionen innehar de mest betydelige negative residualene. Deretter følger Haugesund og Karmøy. Felles for de tre nevnte er at vår predikerte modell, vurderer prisen til å være høyere enn den faktisk er.
+Oppsummeringsvis kan man trekke konklusjonen om at at eiendommer i Stavanger-området er undervurdert prismessig, samtidig som eiendommer i og rundt Haugesundsregionen er overvurdert. Det kan se ut til at Boknafjorden utgjør skillet for resultatene våre.
 
 ## Modell for hvert år
 
