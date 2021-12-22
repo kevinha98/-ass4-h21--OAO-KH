@@ -239,7 +239,9 @@ pm2 %>%
 
 #### Kommentarer til grafen
 
-Denne grafen forteller oss er at eiendommer i Stavanger-området er overvurdert prismessig, samtidig som eiendommer i og rundt Haugesundsregionen er undervurdert
+Denne grafen forteller oss er at eiendommer i Stavanger-området er overvurdert prismessig, samtidig som eiendommer i og rundt Haugesundsregionen er undervurdert. 
+
+Midlertidig kommentar fra Kevin: Vi ser tre grafef som liker betydelig under $y = 0$. Dette demonsterer negative feilledd som er et resultat av at predikert linje sikter for høyt i forhold til våre faktiske observasjoner. Vi overvurderer med andre ord prisen. Helt konkret ser vi Sauda helt nord i regionen innehar de mest betydelige negative residualene. Deretter følger Haugesund og Karmøy. Felles for de tre nevnte er at vår predikerte modell, vurderer prisen til å være høyere enn den faktisk er.
 
 ## Modell for hvert år
 
