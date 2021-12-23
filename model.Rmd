@@ -23,7 +23,7 @@ library(lmtest)
 library(sandwich)
 library(viridis)
 })
-knitr::opts_chunk$set(echo=FALSE, include = FALSE)
+#knitr::opts_chunk$set(echo=FALSE, include = FALSE)
 ```
 
 # Modeller
@@ -307,7 +307,7 @@ pm2_n$model[[1]] %>%
 ```
 
 
-```{r pm2_n}
+```{r pm2_n2}
 pm2_n %>%
   filter(aar_d == "2008-01-01") %>% 
   .$model %>%
@@ -355,7 +355,7 @@ coef_df_long <- coef_df %>%
 
 Vi bruker så *coef_df_long* videre for å lage en ggplot av fylke-faktorvariablenes koeffisienter.
 
-```{r plot}
+```{r plot2}
 coef_df_long %>%
   select(aar, variables, coef) %>%
   filter(
@@ -383,7 +383,7 @@ I 2014 så hadde vi en "oljekrise" der prisen på olje hadde et kraftig fall, og
 
 ## Tilsvarende plot, nye variabler
 
-```{r plot}
+```{r plot3}
 coef_df_long %>%
 select(aar, variables, coef) %>%
 filter(
@@ -398,3 +398,8 @@ theme(legend.position = 'bottom')
 ### Diskusjon
 
 Med unntak av *Trade_pc_100K* og *inc_k1* variablene, ser det ut til at koeffisientene er ganske stabile over tid. Det er forsåvidt ikke stor ustabilitet for *inc_k1* heller, men den er litt mer ustabil enn de andre 4, og den har en konstant nedadgående trend. *Trade_pc_100K*-koeffisienten derimot er ikke stabil på sikt.
+
+```{r, echo = FALSE}
+#siste
+```
+
