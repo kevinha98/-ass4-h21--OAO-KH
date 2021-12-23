@@ -1,0 +1,11 @@
+---
+title: "ag comments"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+-   I hent-ssb-data.Rmd har dere brukt samme chunk-navn flere ganger. Da stopper knit med en feilmelding. Har endret navnene til name, name1, name2 etc.
+-   I model.Rmd hadde dere også et par chunk-navn duplicater. Har fikset dem som over.
+-   ***Husk at knitr forlanger at hver chunk har sitt unike navn. Ellers slenger den ut en sint feilmelding.***

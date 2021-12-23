@@ -14,7 +14,8 @@ lang: no-NB
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+# Ikke bruk denne, da blir ikke koden kjørt
+#knitr::opts_chunk$set(echo = FALSE, include = FALSE)
 suppressPackageStartupMessages({
 library(PxWebApiData)
 library(tidyverse)
@@ -212,7 +213,7 @@ pop_08_17_ya <- pop_08_17_ya_raw %>%
 
 -
 
-```{r Names}
+```{r Names2}
 names(pop_08_17_ya)[[1]] <- "knr"
 names(pop_08_17_ya)[[2]] <- "aar"
 names(pop_08_17_ya)[[3]] <- "ya_menn"
@@ -264,7 +265,7 @@ pop_08_17 <- pop_08_17_raw %>%
 
 -
 
-```{r Names}
+```{r Names3}
 names(pop_08_17)[[1]] <- "knr"
 names(pop_08_17)[[2]] <- "Alder"
 names(pop_08_17)[[3]] <- "aar"
@@ -319,7 +320,7 @@ pop_08_17_ya_p <- merge(pop_08_17, pop_08_17_ya)
 
 ### Muterer nye variabler prosentvis yrkesaktiv alder
 
-```{r Muterer_Variabler}
+```{r Muterer_Variabler2}
 pop_08_17_ya_p <- pop_08_17_ya_p %>% 
   mutate(Menn_ya_p = ya_menn/Menn_t*100) %>% 
   mutate(Kvinner_ya_p = ya_kvinner/Kvinner_t*100) %>% 
@@ -328,14 +329,14 @@ pop_08_17_ya_p <- pop_08_17_ya_p %>%
 
 -
 
-```{r Velger_Variabler}
+```{r Velger_Variabler2}
 pop_08_17_ya_p <- pop_08_17_ya_p %>% 
   select(knr, aar, Menn_ya_p, Kvinner_ya_p, Totalt_ya_p)
 ```
 
 Sjekker om vi har gjort rett
 
-```{r Head}
+```{r Head2}
 head(pop_08_17_ya_p, n=5)
 ```
 
@@ -397,7 +398,7 @@ names(kvintiler_08_17)[[6]] <- "Desil_10"
 
 -
 
-```{r Muterer_Variabler}
+```{r Muterer_Variabler3}
 kvintiler_08_17 <- kvintiler_08_17 %>% 
   mutate(inc_k1 = Desil_1 + Desil_2) %>% 
   mutate(inc_k5 = Desil_9 + Desil_10)
@@ -405,7 +406,7 @@ kvintiler_08_17 <- kvintiler_08_17 %>%
 
 -
 
-```{r Velger_Variabler}
+```{r Velger_Variabler3}
 kvintiler_08_17 <- kvintiler_08_17 %>%
   select(knr, aar, inc_k1, inc_k5)
 ```
